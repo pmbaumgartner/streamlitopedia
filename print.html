@@ -489,6 +489,250 @@ $font-family-monospace: &quot;IBM Plex Mono&quot;, monospace;
 <h4><a class="header" href="#bootstrap" id="bootstrap">Bootstrap</a></h4>
 <p>Streamlit uses the <a href="https://getbootstrap.com/docs/4.0/getting-started/introduction/">Bootstrap</a> framework behind the scenes. This means you can use bootstrap helper classes, for example <a href="https://getbootstrap.com/docs/4.0/content/images/"><code>img-fluid</code></a>, if you're writing HTML within Markdown.</p>
 <h1><a class="header" href="#theming-altair" id="theming-altair">Theming Altair</a></h1>
+<p>If you use Altair for visualizations, you can <a href="https://altair-viz.github.io/user_guide/configuration.html#defining-a-custom-theme">define a custom theme</a> to adjust the look of your visualization to match streamlit's theme.</p>
+<h2><a class="header" href="#streamlit-altair-theme" id="streamlit-altair-theme">Streamlit Altair Theme</a></h2>
+<p>The python code below will apply a theme to your Altair visualizations that by default should match streamlit's theme settings. The default single color scale uses gradation of the primary color and was built with the <a href="https://gka.github.io/palettes/#/9%7Cs%7Cf63366%7C1f77b4%7C1%7C1">Chroma.js Color Palette Helper</a>. The <a href="https://gka.github.io/palettes/#/9%7Cd%7Cf63366%7C1f77b4%7C1%7C1">divergent scale</a> uses the primary color and the blue from the <a href="./essentials.html#other-secondary-colors">secondary colors</a>. The categorical palette is a <a href="https://coolors.co/f63366-fffd80-0068c9-ff2b2b-09ab3b">5-color palette</a> with the primary color, light-yellow secondary color, and remaining colors from the secondary palette. </p>
+<p>The theme also adjusts the font to <code>IBM Plex Mono</code> to match data in dataframes and tables. It also adjusts the font sizes so that labels match the size of table elements and the chart title is the same size as an <code>&lt;h3&gt;</code> (header 3) element.</p>
+<h3><a class="header" href="#example" id="example">Example</a></h3>
+<p><img src="./images/altair-streamlit-theme1-example.png" alt="Plot Example" /></p>
+<h3><a class="header" href="#theme-code" id="theme-code">Theme Code</a></h3>
+<pre><code class="language-python">def streamlit_theme():
+    font = &quot;IBM Plex Mono&quot;
+    primary_color = &quot;#F63366&quot;
+    font_color = &quot;#262730&quot;
+    grey_color = &quot;#f0f2f6&quot;
+    base_size = 16
+    lg_font = base_size * 1.25
+    sm_font = base_size * 0.8  # st.table size
+    xl_font = base_size * 1.75
+
+    config = {
+        &quot;config&quot;: {
+            &quot;arc&quot;: {&quot;fill&quot;: primary_color},
+            &quot;area&quot;: {&quot;fill&quot;: primary_color},
+            &quot;circle&quot;: {&quot;fill&quot;: primary_color, &quot;stroke&quot;: font_color, &quot;strokeWidth&quot;: 0.5},
+            &quot;line&quot;: {&quot;stroke&quot;: primary_color},
+            &quot;path&quot;: {&quot;stroke&quot;: primary_color},
+            &quot;point&quot;: {&quot;stroke&quot;: primary_color},
+            &quot;rect&quot;: {&quot;fill&quot;: primary_color},
+            &quot;shape&quot;: {&quot;stroke&quot;: primary_color},
+            &quot;symbol&quot;: {&quot;fill&quot;: primary_color},
+            &quot;title&quot;: {
+                &quot;font&quot;: font,
+                &quot;color&quot;: font_color,
+                &quot;fontSize&quot;: lg_font,
+                &quot;anchor&quot;: &quot;start&quot;,
+            },
+            &quot;axis&quot;: {
+                &quot;titleFont&quot;: font,
+                &quot;titleColor&quot;: font_color,
+                &quot;titleFontSize&quot;: sm_font,
+                &quot;labelFont&quot;: font,
+                &quot;labelColor&quot;: font_color,
+                &quot;labelFontSize&quot;: sm_font,
+                &quot;gridColor&quot;: grey_color,
+                &quot;domainColor&quot;: font_color,
+                &quot;tickColor&quot;: &quot;#fff&quot;,
+            },
+            &quot;header&quot;: {
+                &quot;labelFont&quot;: font,
+                &quot;titleFont&quot;: font,
+                &quot;labelFontSize&quot;: base_size,
+                &quot;titleFontSize&quot;: base_size,
+            },
+            &quot;legend&quot;: {
+                &quot;titleFont&quot;: font,
+                &quot;titleColor&quot;: font_color,
+                &quot;titleFontSize&quot;: sm_font,
+                &quot;labelFont&quot;: font,
+                &quot;labelColor&quot;: font_color,
+                &quot;labelFontSize&quot;: sm_font,
+            },
+            &quot;range&quot;: {
+                &quot;category&quot;: [&quot;#f63366&quot;, &quot;#fffd80&quot;, &quot;#0068c9&quot;, &quot;#ff2b2b&quot;, &quot;#09ab3b&quot;],
+                &quot;diverging&quot;: [
+                    &quot;#850018&quot;,
+                    &quot;#cd1549&quot;,
+                    &quot;#f6618d&quot;,
+                    &quot;#fbafc4&quot;,
+                    &quot;#f5f5f5&quot;,
+                    &quot;#93c5fe&quot;,
+                    &quot;#5091e6&quot;,
+                    &quot;#1d5ebd&quot;,
+                    &quot;#002f84&quot;,
+                ],
+                &quot;heatmap&quot;: [
+                    &quot;#ffb5d4&quot;,
+                    &quot;#ff97b8&quot;,
+                    &quot;#ff7499&quot;,
+                    &quot;#fc4c78&quot;,
+                    &quot;#ec245f&quot;,
+                    &quot;#d2004b&quot;,
+                    &quot;#b10034&quot;,
+                    &quot;#91001f&quot;,
+                    &quot;#720008&quot;,
+                ],
+                &quot;ramp&quot;: [
+                    &quot;#ffb5d4&quot;,
+                    &quot;#ff97b8&quot;,
+                    &quot;#ff7499&quot;,
+                    &quot;#fc4c78&quot;,
+                    &quot;#ec245f&quot;,
+                    &quot;#d2004b&quot;,
+                    &quot;#b10034&quot;,
+                    &quot;#91001f&quot;,
+                    &quot;#720008&quot;,
+                ],
+                &quot;ordinal&quot;: [
+                    &quot;#ffb5d4&quot;,
+                    &quot;#ff97b8&quot;,
+                    &quot;#ff7499&quot;,
+                    &quot;#fc4c78&quot;,
+                    &quot;#ec245f&quot;,
+                    &quot;#d2004b&quot;,
+                    &quot;#b10034&quot;,
+                    &quot;#91001f&quot;,
+                    &quot;#720008&quot;,
+                ],
+            },
+        }
+    }
+    return config
+</code></pre>
+<h4><a class="header" href="#applying-the-theme" id="applying-the-theme">Applying the Theme</a></h4>
+<p>After you define this function, you'll need to register the theme with Altair wherever you define your plots.</p>
+<pre><code class="language-python">alt.themes.register(&quot;streamlit&quot;, streamlit_theme)
+alt.themes.enable(&quot;streamlit&quot;)
+</code></pre>
+<h2><a class="header" href="#alternative-theme" id="alternative-theme">Alternative Theme</a></h2>
+<p>This alternative theme is closer to the default theme in <code>ggplot2</code>. It adds a grey background, changes the grid to white, and removes some of the dark plot spine.</p>
+<h3><a class="header" href="#example-1" id="example-1">Example</a></h3>
+<p><img src="images/altair-streamlit-theme2-example.png" alt="Alternative Theme" /></p>
+<h3><a class="header" href="#theme-code-1" id="theme-code-1">Theme Code</a></h3>
+<pre><code class="language-python">def streamlit_theme_alt():
+    font = &quot;IBM Plex Mono&quot;
+    primary_color = &quot;#F63366&quot;
+    font_color = &quot;#262730&quot;
+    grey_color = &quot;#f0f2f6&quot;
+    base_size = 16
+    lg_font = base_size * 1.25
+    sm_font = base_size * 0.8  # st.table size
+    xl_font = base_size * 1.75
+
+    config = {
+        &quot;config&quot;: {
+            &quot;view&quot;: {&quot;fill&quot;: grey_color},
+            &quot;arc&quot;: {&quot;fill&quot;: primary_color},
+            &quot;area&quot;: {&quot;fill&quot;: primary_color},
+            &quot;circle&quot;: {&quot;fill&quot;: primary_color, &quot;stroke&quot;: font_color, &quot;strokeWidth&quot;: 0.5},
+            &quot;line&quot;: {&quot;stroke&quot;: primary_color},
+            &quot;path&quot;: {&quot;stroke&quot;: primary_color},
+            &quot;point&quot;: {&quot;stroke&quot;: primary_color},
+            &quot;rect&quot;: {&quot;fill&quot;: primary_color},
+            &quot;shape&quot;: {&quot;stroke&quot;: primary_color},
+            &quot;symbol&quot;: {&quot;fill&quot;: primary_color},
+            &quot;title&quot;: {
+                &quot;font&quot;: font,
+                &quot;color&quot;: font_color,
+                &quot;fontSize&quot;: lg_font,
+                &quot;anchor&quot;: &quot;start&quot;,
+            },
+            &quot;axis&quot;: {
+                &quot;titleFont&quot;: font,
+                &quot;titleColor&quot;: font_color,
+                &quot;titleFontSize&quot;: sm_font,
+                &quot;labelFont&quot;: font,
+                &quot;labelColor&quot;: font_color,
+                &quot;labelFontSize&quot;: sm_font,
+                &quot;grid&quot;: True,
+                &quot;gridColor&quot;: &quot;#fff&quot;,
+                &quot;gridOpacity&quot;: 1,
+                &quot;domain&quot;: False,
+                # &quot;domainColor&quot;: font_color,
+                &quot;tickColor&quot;: font_color,
+            },
+            &quot;header&quot;: {
+                &quot;labelFont&quot;: font,
+                &quot;titleFont&quot;: font,
+                &quot;labelFontSize&quot;: base_size,
+                &quot;titleFontSize&quot;: base_size,
+            },
+            &quot;legend&quot;: {
+                &quot;titleFont&quot;: font,
+                &quot;titleColor&quot;: font_color,
+                &quot;titleFontSize&quot;: sm_font,
+                &quot;labelFont&quot;: font,
+                &quot;labelColor&quot;: font_color,
+                &quot;labelFontSize&quot;: sm_font,
+            },
+            &quot;range&quot;: {
+                &quot;category&quot;: [&quot;#f63366&quot;, &quot;#fffd80&quot;, &quot;#0068c9&quot;, &quot;#ff2b2b&quot;, &quot;#09ab3b&quot;],
+                &quot;diverging&quot;: [
+                    &quot;#850018&quot;,
+                    &quot;#cd1549&quot;,
+                    &quot;#f6618d&quot;,
+                    &quot;#fbafc4&quot;,
+                    &quot;#f5f5f5&quot;,
+                    &quot;#93c5fe&quot;,
+                    &quot;#5091e6&quot;,
+                    &quot;#1d5ebd&quot;,
+                    &quot;#002f84&quot;,
+                ],
+                &quot;heatmap&quot;: [
+                    &quot;#ffb5d4&quot;,
+                    &quot;#ff97b8&quot;,
+                    &quot;#ff7499&quot;,
+                    &quot;#fc4c78&quot;,
+                    &quot;#ec245f&quot;,
+                    &quot;#d2004b&quot;,
+                    &quot;#b10034&quot;,
+                    &quot;#91001f&quot;,
+                    &quot;#720008&quot;,
+                ],
+                &quot;ramp&quot;: [
+                    &quot;#ffb5d4&quot;,
+                    &quot;#ff97b8&quot;,
+                    &quot;#ff7499&quot;,
+                    &quot;#fc4c78&quot;,
+                    &quot;#ec245f&quot;,
+                    &quot;#d2004b&quot;,
+                    &quot;#b10034&quot;,
+                    &quot;#91001f&quot;,
+                    &quot;#720008&quot;,
+                ],
+                &quot;ordinal&quot;: [
+                    &quot;#ffb5d4&quot;,
+                    &quot;#ff97b8&quot;,
+                    &quot;#ff7499&quot;,
+                    &quot;#fc4c78&quot;,
+                    &quot;#ec245f&quot;,
+                    &quot;#d2004b&quot;,
+                    &quot;#b10034&quot;,
+                    &quot;#91001f&quot;,
+                    &quot;#720008&quot;,
+                ],
+            },
+        }
+    }
+    return config
+
+
+</code></pre>
+<p>Again, be sure you register the theme after you define it. Note that this function is called <code>streamlit_theme_alt</code>.</p>
+<h3><a class="header" href="#large-categorical-color-palette" id="large-categorical-color-palette">Large Categorical Color Palette</a></h3>
+<p>The palette below may be helpful if you have more than 5 categories.</p>
+<pre><code class="language-python">category_large = [
+    &quot;#f63366&quot;,
+    &quot;#0068c9&quot;,
+    &quot;#fffd80&quot;,
+    &quot;#7c61b0&quot;,
+    &quot;#ffd37b&quot;,
+    &quot;#ae5897&quot;,
+    &quot;#ffa774&quot;,
+    &quot;#d44a7e&quot;,
+    &quot;#fd756d&quot;,
+]
+</code></pre>
 <h1><a class="header" href="#example-apps" id="example-apps">Example Apps</a></h1>
 <h2><a class="header" href="#gists" id="gists">Gists</a></h2>
 <p>The following apps are gists, which you can run directly with streamlit installed by running <code>streamlit run &lt;GIST URL&gt;</code></p>
