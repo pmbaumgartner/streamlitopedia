@@ -242,8 +242,6 @@ def streamlit_theme_alt():
         }
     }
     return config
-
-
 ```
 
 Again, be sure you register the theme after you define it. Note that this function is called `streamlit_theme_alt`.
