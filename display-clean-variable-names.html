@@ -4,7 +4,7 @@
 <head>
     <!-- Book generated using mdBook -->
     <meta charset="UTF-8">
-    <title>Introduction - Streamlitpedia</title>
+    <title>Display Clean Variable Names - Streamlitpedia</title>
     
 
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -85,7 +85,7 @@
 
     <nav id="sidebar" class="sidebar" aria-label="Table of contents">
         <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded affix "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
+            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html" class="active"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded affix "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
         </div>
         <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
     </nav>
@@ -164,16 +164,56 @@
 
             <div id="content" class="content">
                 <main>
-                    <h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
+                    <h1><a class="header" href="#display-clean-variable-names" id="display-clean-variable-names">Display Clean Variable Names</a></h1>
+<p>The variable names in a DataFrame might be snake cased or formatted in a way not appropriate for end users, e.g. <code>pointless_metric_my_boss_requested_and_i_reluctantly_included</code>. Most of the streamlit widgets contain a <code>format_func</code> parameter which takes function that applies formatting for display to the option values you provide the widget. As a simple example, you could title case each of the variable names.</p>
+<p>You can also use this functionality, combined with a dictionary, to explicitly handle the formatting of your values. The example below cleans up the column names from the birdstrikes dataset for use as a dropdown to describe each column.</p>
+<pre><code class="language-python">import streamlit as st
+from vega_datasets import data
+
+
+@st.cache
+def load_data():
+    return data.birdstrikes()
+
+
+cols = {
+    &quot;Airport__Name&quot;: &quot;Airport Name&quot;,
+    &quot;Aircraft__Make_Model&quot;: &quot;Aircraft Make &amp; Model&quot;,
+    &quot;Effect__Amount_of_damage&quot;: &quot;Effect: Amount of Damage&quot;,
+    &quot;Flight_Date&quot;: &quot;Flight Date&quot;,
+    &quot;Aircraft__Airline_Operator&quot;: &quot;Airline Operator&quot;,
+    &quot;Origin_State&quot;: &quot;Origin State&quot;,
+    &quot;When__Phase_of_flight&quot;: &quot;When (Phase of Flight)&quot;,
+    &quot;Wildlife__Size&quot;: &quot;Wildlife Size&quot;,
+    &quot;Wildlife__Species&quot;: &quot;Wildlife Species&quot;,
+    &quot;When__Time_of_day&quot;: &quot;When (Time of Day)&quot;,
+    &quot;Cost__Other&quot;: &quot;Cost (Other)&quot;,
+    &quot;Cost__Repair&quot;: &quot;Cost (Repair)&quot;,
+    &quot;Cost__Total_$&quot;: &quot;Cost (Total) ($)&quot;,
+    &quot;Speed_IAS_in_knots&quot;: &quot;Speed (in Knots)&quot;,
+}
+
+dataset = load_data()
+
+column = st.selectbox(&quot;Describe Column&quot;, list(dataset.columns), format_func=cols.get)
+
+st.write(dataset[column].describe())
+</code></pre>
+<p><a href="https://gist.github.com/pmbaumgartner/4558781c0dfe8a4539201eaeb575ba51/raw/7dedf6c4064af6586d2f136a35e4d2ac5814031f/format_func_with_dict.py">Link to Gist</a></p>
 
                 </main>
 
                 <nav class="nav-wrapper" aria-label="Page navigation">
                     <!-- Mobile navigation buttons -->
                     
+                    <a rel="prev" href="front/introduction.html" class="mobile-nav-chapters previous"
+                        title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    
 
                     
-                    <a rel="next" href="display-clean-variable-names.html" class="mobile-nav-chapters next"
+                    <a rel="next" href="use-caching.html" class="mobile-nav-chapters next"
                         title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -186,9 +226,14 @@
 
         <nav class="nav-wide-wrapper" aria-label="Page navigation">
             
+            <a href="front/introduction.html" class="nav-chapters previous" title="Previous chapter"
+                aria-label="Previous chapter" aria-keyshortcuts="Left">
+                <i class="fa fa-angle-left"></i>
+            </a>
+            
 
             
-            <a href="display-clean-variable-names.html" class="nav-chapters next" title="Next chapter"
+            <a href="use-caching.html" class="nav-chapters next" title="Next chapter"
                 aria-label="Next chapter" aria-keyshortcuts="Right">
                 <i class="fa fa-angle-right"></i>
             </a>

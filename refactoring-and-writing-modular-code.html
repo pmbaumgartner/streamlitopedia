@@ -4,7 +4,7 @@
 <head>
     <!-- Book generated using mdBook -->
     <meta charset="UTF-8">
-    <title>Introduction - Streamlitpedia</title>
+    <title>Refactoring &amp; Writing Modular Code - Streamlitpedia</title>
     
 
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -85,7 +85,7 @@
 
     <nav id="sidebar" class="sidebar" aria-label="Table of contents">
         <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded affix "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
+            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html" class="active"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded affix "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
         </div>
         <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
     </nav>
@@ -164,16 +164,68 @@
 
             <div id="content" class="content">
                 <main>
-                    <h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
+                    <h1><a class="header" href="#refactoring--writing-modular-code" id="refactoring--writing-modular-code">Refactoring &amp; Writing Modular Code</a></h1>
+<p>It’s easy to spend a few hours with streamlit and have a 500 line <code>app.py</code> file that nobody but you understands. If you're handing off your code, deploying your app, or adding a some new functionality it's now possible that you'll be spending a significant amount of time trying to remember how your code works because you've neglected good code hygiene.</p>
+<p>If an app is beyond 100 lines of code, it can probably benefit from a refactor. A good first step is to create functions from the code and put those functions in a separate <code>helpers.py</code> file. This also makes it easier to test and benchmark caching on these functions.</p>
+<p>There’s no specific right way on how exactly to refactor code, but I’ve developed an exercise that can help when starting an app refactor.</p>
+<p><strong>Refactoring Exercise</strong></p>
+<p>In the <code>app.py</code>, try to:</p>
+<ul>
+<li>only import streamlit and helper functions (don’t forget to <a href="./use-caching.html">benchmark</a> <code>@st.cache</code> on these helper functions)</li>
+<li>never create a variable that isn’t input into a streamlit object, i.e. visualization or widget, in the next line of code (with the exception of the data loading function)</li>
+</ul>
+<p>These aren’t hard and fast rules to always abide by: you could follow them specifically and have a poorly organized app because you’ve got large, complex functions that do too much. However, they are good objectives to start with when moving from everything in app.py to a more modular structure.
+The example below highlights an app before and after going through this exercise.</p>
+<p><strong>⛔️ BAD EXAMPLE: PRE-REFACTOR</strong></p>
+<pre><code class="language-python"># app.py
+import streamlit as st
+import pandas as pd
+
+data = pd.read_csv(&quot;data.csv&quot;)  # no function → no cache, requires pandas import: 👎,👎
+sample = data.head(100)  # not input into streamlit object: 👎
+described_sample = sample.describe()  # input into streamlit object: ✅
+st.write(described_sample)
+
+</code></pre>
+<p><strong>✅ GOOD EXAMPLE</strong></p>
+<pre><code class="language-python"># app.py
+import streamlit as st
+from helpers import load_data, describe_sample
+
+data = load_data()  # data import: ✅
+described_sample = describe_sample(data, 100)  # input into streamlit object: ✅
+st.write(described_sample)
+
+# helpers.py
+import streamlit as st
+import pandas as pd
+
+
+@st.cache
+def load_data():
+    return pd.read_csv(&quot;data.csv&quot;)
+
+
+@st.cache
+def describe_sample(dataset, nrows):
+    sample = dataset.head(nrows)
+    return sample.describe()
+</code></pre>
+<p>Another benefit of reorganizing code in this way is that the functions in the helpers file are now easier to write tests for. Sometimes I struggle with coming up with ideas of what to test, but I’ve found that now it’s really easy to come up with tests for my apps because I’m more quickly discovering bugs and edge cases now that I’m interacting more closely with the data and code. Now, any time my app displays a traceback, I fix the function that caused it and write a test to make sure the new behavior is what I expect.</p>
 
                 </main>
 
                 <nav class="nav-wrapper" aria-label="Page navigation">
                     <!-- Mobile navigation buttons -->
                     
+                    <a rel="prev" href="altair-for-visualizations.html" class="mobile-nav-chapters previous"
+                        title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    
 
                     
-                    <a rel="next" href="display-clean-variable-names.html" class="mobile-nav-chapters next"
+                    <a rel="next" href="back/example-apps.html" class="mobile-nav-chapters next"
                         title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -186,9 +238,14 @@
 
         <nav class="nav-wide-wrapper" aria-label="Page navigation">
             
+            <a href="altair-for-visualizations.html" class="nav-chapters previous" title="Previous chapter"
+                aria-label="Previous chapter" aria-keyshortcuts="Left">
+                <i class="fa fa-angle-left"></i>
+            </a>
+            
 
             
-            <a href="display-clean-variable-names.html" class="nav-chapters next" title="Next chapter"
+            <a href="back/example-apps.html" class="nav-chapters next" title="Next chapter"
                 aria-label="Next chapter" aria-keyshortcuts="Right">
                 <i class="fa fa-angle-right"></i>
             </a>

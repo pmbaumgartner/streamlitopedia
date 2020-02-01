@@ -4,7 +4,7 @@
 <head>
     <!-- Book generated using mdBook -->
     <meta charset="UTF-8">
-    <title>Introduction - Streamlitpedia</title>
+    <title>Create Dynamic Widgets - Streamlitpedia</title>
     
 
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -85,7 +85,7 @@
 
     <nav id="sidebar" class="sidebar" aria-label="Table of contents">
         <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded affix "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
+            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html" class="active"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded affix "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
         </div>
         <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
     </nav>
@@ -164,16 +164,63 @@
 
             <div id="content" class="content">
                 <main>
-                    <h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
+                    <h1><a class="header" href="#create-dynamic-widgets" id="create-dynamic-widgets">Create Dynamic Widgets</a></h1>
+<p>Many examples focus on creating dynamic visualizations, but don’t forget you can also program dynamic widgets. The simplest example of this need is when two columns in a dataset have a nested relationship and there are two widgets to select values from those two columns. When building an app to filter data, the the dropdown for the first column should change the options available in the second dropdown.</p>
+<p>Linking behavior of two dropdowns is a common use case. The example below builds a scatterplot with the <code>cars</code> dataset. We need a dynamic dropdown here because the variable we select for the x-axis doesn't need to be available for selection in the y-axis.</p>
+<p>We can also go beyond this basic dynamic functionality: what if we sorted the available y-axis options by their correlation with the selected x variable? We can calculate the correlations and combining this with the widget’s <code>format_func</code> to display variables and their correlations in sorted order.</p>
+<pre><code class="language-python">import altair as alt
+import streamlit as st
+from vega_datasets import data
+
+cars = data.cars()
+
+quantitative_variables = [
+    &quot;Miles_per_Gallon&quot;,
+    &quot;Cylinders&quot;,
+    &quot;Displacement&quot;,
+    &quot;Horsepower&quot;,
+    &quot;Weight_in_lbs&quot;,
+    &quot;Acceleration&quot;,
+]
+
+
+@st.cache
+def get_y_vars(dataset, x, variables):
+    corrs = dataset.corr()[x]
+    remaining_variables = [v for v in variables if v != x]
+    sorted_remaining_variables = sorted(
+        remaining_variables, key=lambda v: corrs[v], reverse=True
+    )
+    format_dict = {v: f&quot;{v} ({corrs[v]:.2f})&quot; for v in sorted_remaining_variables}
+    return sorted_remaining_variables, format_dict
+
+
+st.header(&quot;Cars Dataset - Correlation Dynamic Dropdown&quot;)
+x = st.selectbox(&quot;x&quot;, quantitative_variables)
+y_options, y_formats = get_y_vars(cars, x, quantitative_variables)
+y = st.selectbox(
+    f&quot;y (sorted by correlation with {x})&quot;, y_options, format_func=y_formats.get
+)
+
+plot = alt.Chart(cars).mark_circle().encode(x=x, y=y)
+
+st.altair_chart(plot)
+</code></pre>
+<p><a href="https://gist.github.com/pmbaumgartner/23d919cb7badd3ce4f2807af68897a75/raw/72b71923cb4db876b64fbd6283f2380d4cce1020/dynamic_widget.py">Link to Gist</a></p>
 
                 </main>
 
                 <nav class="nav-wrapper" aria-label="Page navigation">
                     <!-- Mobile navigation buttons -->
                     
+                    <a rel="prev" href="use-caching.html" class="mobile-nav-chapters previous"
+                        title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    
 
                     
-                    <a rel="next" href="display-clean-variable-names.html" class="mobile-nav-chapters next"
+                    <a rel="next" href="f-strings-and-markdown.html" class="mobile-nav-chapters next"
                         title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -186,9 +233,14 @@
 
         <nav class="nav-wide-wrapper" aria-label="Page navigation">
             
+            <a href="use-caching.html" class="nav-chapters previous" title="Previous chapter"
+                aria-label="Previous chapter" aria-keyshortcuts="Left">
+                <i class="fa fa-angle-left"></i>
+            </a>
+            
 
             
-            <a href="display-clean-variable-names.html" class="nav-chapters next" title="Next chapter"
+            <a href="f-strings-and-markdown.html" class="nav-chapters next" title="Next chapter"
                 aria-label="Next chapter" aria-keyshortcuts="Right">
                 <i class="fa fa-angle-right"></i>
             </a>

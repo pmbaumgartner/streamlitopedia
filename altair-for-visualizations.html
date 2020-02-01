@@ -4,7 +4,7 @@
 <head>
     <!-- Book generated using mdBook -->
     <meta charset="UTF-8">
-    <title>Introduction - Streamlitpedia</title>
+    <title>Altair for Visualizations - Streamlitpedia</title>
     
 
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -85,7 +85,7 @@
 
     <nav id="sidebar" class="sidebar" aria-label="Table of contents">
         <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded affix "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
+            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html" class="active"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded affix "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
         </div>
         <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
     </nav>
@@ -164,16 +164,85 @@
 
             <div id="content" class="content">
                 <main>
-                    <h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
+                    <h1><a class="header" href="#altair-for-visualizations" id="altair-for-visualizations">Altair for Visualizations</a></h1>
+<p>If you’ve been prototyping visualizations with another library, consider switching to Altair to build your visualizations. In my experience, I think there are three key reasons a switch could be beneficial:</p>
+<ol>
+<li>Altair is probably faster (unless we’re plotting a lot of data)</li>
+<li>It operates directly on pandas DataFrames</li>
+<li>Interactive visualizations are easy to create</li>
+</ol>
+<p>On the first point about speed, we can see a drastic speedup if we prototyped using matplotlib. Most of that speedup is just the fact that it takes more time to render a static image and place it in the app compared to rendering a javascript visualization. This is demonstrated in the example app below, which generates a scatterplot for some generated data and outputs the timing for the creation and rendering for each part of the visualization.</p>
+<pre><code class="language-python">from time import time
+
+import altair as alt
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import streamlit as st
+
+
+def mpl_scatter(dataset, x, y):
+    fig, ax = plt.subplots()
+    dataset.plot.scatter(x=x, y=y, alpha=0.8, ax=ax)
+    return fig
+
+
+def altair_scatter(dataset, x, y):
+    plot = (
+        alt.Chart(dataset, height=400, width=400)
+        .mark_point(filled=True, opacity=0.8)
+        .encode(x=x, y=y)
+    )
+    return plot
+
+
+size = st.slider(&quot;Size&quot;, min_value=1000, max_value=100_000, step=10_000)
+dataset = pd.DataFrame(
+    {&quot;x&quot;: np.random.normal(size=size), &quot;y&quot;: np.random.normal(size=size)}
+)
+
+mpl_start = time()
+mpl_plot = mpl_scatter(dataset, &quot;x&quot;, &quot;y&quot;)
+mpl_finish = time()
+
+st.pyplot(mpl_plot)
+mpl_render = time()
+st.subheader(&quot;Matplotlib&quot;)
+st.write(f&quot;Create: {mpl_finish - mpl_start:.3f}s&quot;)
+st.write(f&quot;Render: {mpl_render - mpl_finish:.3f}s&quot;)
+st.write(f&quot;Total: {mpl_render - mpl_start:.3f}s&quot;)
+
+alt_start = time()
+alt_plot = altair_scatter(dataset, &quot;x&quot;, &quot;y&quot;)
+alt_finish = time()
+
+st.altair_chart(alt_plot)
+alt_render = time()
+st.subheader(&quot;Altair&quot;)
+st.write(f&quot;Create: {alt_finish - alt_start:.3f}s&quot;)
+st.write(f&quot;Render: {alt_render - alt_finish:.3f}s&quot;)
+st.write(f&quot;Total: {alt_render - alt_start:.3f}s&quot;)
+
+speedup = (mpl_render - mpl_start) / (alt_render - alt_start)
+st.write(f&quot;MPL / Altair Ratio: {speedup:.1f}x&quot;)
+</code></pre>
+<p><a href="https://gist.github.com/pmbaumgartner/e8cf0cbdf85817aa24d51c8a8e008d7d/raw/3357054a0caaa1f4bf27277c6aaab34e0d0e747d/mpl_altair_streamlit_timing.py">Link to Gist</a></p>
+<p>Working directly with DataFrames provides another benefit. It can ease the debugging process: if there’s an issue with the input data, we can use <code>st.write(df)</code> to display the DataFrame in a streamlit app and inspect it. This makes the feedback loop for debugging data issues much shorter. The second benefit is that it reduces the amount of transformational glue code sometimes required to create specific visualizations. For basic plots, we could use a DataFrame's plotting methods, but more complex visualizations might require us to restructure our dataset in a way that makes sense with the visualization API. This additional code between the dataset and visualization can be the source of additional complexity and can be a pain point as the app grows. Since Altair uses the Vega-Lite visualization grammar, the functions available in the <a href="https://vega.github.io/vega-lite/docs/transform.html">transforms API</a> can be used to make any visualization appropriate transformations.</p>
+<p>Finally, interactive visualizations with Altair are easy. While an app might start by using streamlit widgets to filter and select data, an app could also use a visualization could as the selection mechanism. Rather than communicating information as a string in a widget or narrative, (interactive visualizations)[https://altair-viz.github.io/gallery/index.html#interactive-charts] allow visual communication of aspects of the data within a visualization.</p>
 
                 </main>
 
                 <nav class="nav-wrapper" aria-label="Page navigation">
                     <!-- Mobile navigation buttons -->
                     
+                    <a rel="prev" href="f-strings-and-markdown.html" class="mobile-nav-chapters previous"
+                        title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    
 
                     
-                    <a rel="next" href="display-clean-variable-names.html" class="mobile-nav-chapters next"
+                    <a rel="next" href="refactoring-and-writing-modular-code.html" class="mobile-nav-chapters next"
                         title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -186,9 +255,14 @@
 
         <nav class="nav-wide-wrapper" aria-label="Page navigation">
             
+            <a href="f-strings-and-markdown.html" class="nav-chapters previous" title="Previous chapter"
+                aria-label="Previous chapter" aria-keyshortcuts="Left">
+                <i class="fa fa-angle-left"></i>
+            </a>
+            
 
             
-            <a href="display-clean-variable-names.html" class="nav-chapters next" title="Next chapter"
+            <a href="refactoring-and-writing-modular-code.html" class="nav-chapters next" title="Next chapter"
                 aria-label="Next chapter" aria-keyshortcuts="Right">
                 <i class="fa fa-angle-right"></i>
             </a>

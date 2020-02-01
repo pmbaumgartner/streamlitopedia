@@ -87,7 +87,7 @@
 
     <nav id="sidebar" class="sidebar" aria-label="Table of contents">
         <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-            <ol class="chapter"><li class="expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li></ol>
+            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded affix "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
         </div>
         <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
     </nav>
@@ -166,11 +166,293 @@
 
             <div id="content" class="content">
                 <main>
-                    <h1><a class="header" href="#chapter-1" id="chapter-1">Chapter 1</a></h1>
-<p>This is some text. Ready for code?</p>
-<pre><code class="language-python">def python_func(thing: str):
-    return &quot;Python!&quot;
+                    <h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
+<h1><a class="header" href="#display-clean-variable-names" id="display-clean-variable-names">Display Clean Variable Names</a></h1>
+<p>The variable names in a DataFrame might be snake cased or formatted in a way not appropriate for end users, e.g. <code>pointless_metric_my_boss_requested_and_i_reluctantly_included</code>. Most of the streamlit widgets contain a <code>format_func</code> parameter which takes function that applies formatting for display to the option values you provide the widget. As a simple example, you could title case each of the variable names.</p>
+<p>You can also use this functionality, combined with a dictionary, to explicitly handle the formatting of your values. The example below cleans up the column names from the birdstrikes dataset for use as a dropdown to describe each column.</p>
+<pre><code class="language-python">import streamlit as st
+from vega_datasets import data
+
+
+@st.cache
+def load_data():
+    return data.birdstrikes()
+
+
+cols = {
+    &quot;Airport__Name&quot;: &quot;Airport Name&quot;,
+    &quot;Aircraft__Make_Model&quot;: &quot;Aircraft Make &amp; Model&quot;,
+    &quot;Effect__Amount_of_damage&quot;: &quot;Effect: Amount of Damage&quot;,
+    &quot;Flight_Date&quot;: &quot;Flight Date&quot;,
+    &quot;Aircraft__Airline_Operator&quot;: &quot;Airline Operator&quot;,
+    &quot;Origin_State&quot;: &quot;Origin State&quot;,
+    &quot;When__Phase_of_flight&quot;: &quot;When (Phase of Flight)&quot;,
+    &quot;Wildlife__Size&quot;: &quot;Wildlife Size&quot;,
+    &quot;Wildlife__Species&quot;: &quot;Wildlife Species&quot;,
+    &quot;When__Time_of_day&quot;: &quot;When (Time of Day)&quot;,
+    &quot;Cost__Other&quot;: &quot;Cost (Other)&quot;,
+    &quot;Cost__Repair&quot;: &quot;Cost (Repair)&quot;,
+    &quot;Cost__Total_$&quot;: &quot;Cost (Total) ($)&quot;,
+    &quot;Speed_IAS_in_knots&quot;: &quot;Speed (in Knots)&quot;,
+}
+
+dataset = load_data()
+
+column = st.selectbox(&quot;Describe Column&quot;, list(dataset.columns), format_func=cols.get)
+
+st.write(dataset[column].describe())
 </code></pre>
+<p><a href="https://gist.github.com/pmbaumgartner/4558781c0dfe8a4539201eaeb575ba51/raw/7dedf6c4064af6586d2f136a35e4d2ac5814031f/format_func_with_dict.py">Link to Gist</a></p>
+<h1><a class="header" href="#use-caching-and-benchmark-it" id="use-caching-and-benchmark-it">Use Caching (and Benchmark It)</a></h1>
+<p>It can be tempting to throw that handy <code>@st.cache</code> decorator on everything and hope for the best. However, mindlessly applying caching means that we're missing a great opportunity to get meta and use streamlit to understand where caching helps the most.</p>
+<p>Rather than decorating every function, create two versions of each function: one with the decorator and one without. Then do some basic benchmarking of how long it takes to execute both the cached and uncached versions of that function.</p>
+<p>In the example below, we simulate loading a large dataset by concatenating 100 copies of the <code>airports</code> dataset, then dynamically selecting the first n rows and describing them.</p>
+<pre><code class="language-python">import streamlit as st
+from vega_datasets import data
+from time import time
+import pandas as pd
+
+
+@st.cache
+def load_data():
+    return pd.concat((data.airports() for _ in range(100)))
+
+
+@st.cache
+def select_rows(dataset, nrows):
+    return dataset.head(nrows)
+
+
+@st.cache
+def describe(dataset):
+    return dataset.describe()
+
+
+rows = st.slider(&quot;Rows&quot;, min_value=100, max_value=3300 * 100, step=10000)
+
+start_uncached = time()
+dataset_uncached = pd.concat((data.airports() for _ in range(100)))
+load_uncached = time()
+dataset_sample_uncached = dataset_uncached.head(rows)
+select_uncached = time()
+describe_uncached_dataset = dataset_sample_uncached.describe()
+finish_uncached = time()
+benchmark_uncached = (
+    f&quot;Cached. Total: {finish_uncached - start_uncached:.2f}s&quot;
+    f&quot; Load: {load_uncached - start_uncached:.2f}&quot;
+    f&quot; Select: {select_uncached - load_uncached:.2f}&quot;
+    f&quot; Describe: {finish_uncached - select_uncached:.2f}&quot;
+)
+
+st.text(benchmark_uncached)
+st.write(describe_uncached_dataset)
+
+start_cached = time()
+dataset_cached = load_data()
+load_cached = time()
+dataset_sample_cached = select_rows(dataset_cached, rows)
+select_cached = time()
+describe_cached_dataset = describe(dataset_sample_cached)
+finish_cached = time()
+
+benchmark_cached = (
+    f&quot;Cached. Total: {finish_cached - start_cached:.2f}s&quot;
+    f&quot; Load: {load_cached - start_cached:.2f}&quot;
+    f&quot; Select: {select_cached - load_cached:.2f}&quot;
+    f&quot; Describe: {finish_cached - select_cached:.2f}&quot;
+)
+st.text(benchmark_cached)
+st.write(describe_cached_dataset)
+</code></pre>
+<p><a href="https://gist.github.com/pmbaumgartner/8097c08313cea57f02c54f23d4836621/raw/e5f89d6ade3aca306b38a3814ef550afa4992a80/cache_benchmarking.py">Link to Gist</a></p>
+<p>Since each step (data load, select rows, describe selection) of this is timed, we can see where caching provides a speedup. From my experience with this example, my heuristics for caching are:</p>
+<ul>
+<li>Always cache loading the dataset</li>
+<li>Probably cache functions that take longer than a half second</li>
+<li>Benchmark everything else</li>
+</ul>
+<p>I think caching is one of streamlit’s killer features and I know they’re focusing on it and improving it. Caching intelligently is also complex problem, so it’s a good idea to lean more towards benchmarking and validating that the caching functionality is acting as expected.</p>
+<h1><a class="header" href="#create-dynamic-widgets" id="create-dynamic-widgets">Create Dynamic Widgets</a></h1>
+<p>Many examples focus on creating dynamic visualizations, but don’t forget you can also program dynamic widgets. The simplest example of this need is when two columns in a dataset have a nested relationship and there are two widgets to select values from those two columns. When building an app to filter data, the the dropdown for the first column should change the options available in the second dropdown.</p>
+<p>Linking behavior of two dropdowns is a common use case. The example below builds a scatterplot with the <code>cars</code> dataset. We need a dynamic dropdown here because the variable we select for the x-axis doesn't need to be available for selection in the y-axis.</p>
+<p>We can also go beyond this basic dynamic functionality: what if we sorted the available y-axis options by their correlation with the selected x variable? We can calculate the correlations and combining this with the widget’s <code>format_func</code> to display variables and their correlations in sorted order.</p>
+<pre><code class="language-python">import altair as alt
+import streamlit as st
+from vega_datasets import data
+
+cars = data.cars()
+
+quantitative_variables = [
+    &quot;Miles_per_Gallon&quot;,
+    &quot;Cylinders&quot;,
+    &quot;Displacement&quot;,
+    &quot;Horsepower&quot;,
+    &quot;Weight_in_lbs&quot;,
+    &quot;Acceleration&quot;,
+]
+
+
+@st.cache
+def get_y_vars(dataset, x, variables):
+    corrs = dataset.corr()[x]
+    remaining_variables = [v for v in variables if v != x]
+    sorted_remaining_variables = sorted(
+        remaining_variables, key=lambda v: corrs[v], reverse=True
+    )
+    format_dict = {v: f&quot;{v} ({corrs[v]:.2f})&quot; for v in sorted_remaining_variables}
+    return sorted_remaining_variables, format_dict
+
+
+st.header(&quot;Cars Dataset - Correlation Dynamic Dropdown&quot;)
+x = st.selectbox(&quot;x&quot;, quantitative_variables)
+y_options, y_formats = get_y_vars(cars, x, quantitative_variables)
+y = st.selectbox(
+    f&quot;y (sorted by correlation with {x})&quot;, y_options, format_func=y_formats.get
+)
+
+plot = alt.Chart(cars).mark_circle().encode(x=x, y=y)
+
+st.altair_chart(plot)
+</code></pre>
+<p><a href="https://gist.github.com/pmbaumgartner/23d919cb7badd3ce4f2807af68897a75/raw/72b71923cb4db876b64fbd6283f2380d4cce1020/dynamic_widget.py">Link to Gist</a></p>
+<h1><a class="header" href="#f-strings-and-markdown" id="f-strings-and-markdown">f-strings and Markdown</a></h1>
+<p>In building an interface around an analysis, much of it requires creating or manipulating strings in variable names, widget values, axis labels, widget labels, or narrative description.</p>
+<p>If we want to display some analysis in narrative form and there’s a few particular variables we want to highlight, <a href="https://realpython.com/python-f-strings/">f-strings</a> and markdown can help us out. Beyond an easy way to fill strings with specific variable values, it’s also an easy way to format them inline. For example, we might use something like this to display basic info about a column in a dataset and highlight them in a markdown string.</p>
+<pre><code class="language-python">mean = df[&quot;values&quot;].mean()
+n_rows = len(df)
+
+md_results = f&quot;The mean is **{mean:.2f}** and there are **{n_rows:,}**.&quot;
+
+st.markdown(md_results)
+</code></pre>
+<p>We’ve used two formats here: <code>.2f</code> to round a float to two decimal places and <code>,</code> to use a comma as a thousands separator. We've also used markdown syntax to bold the values so that they're visually prominent in the text.</p>
+<h1><a class="header" href="#altair-for-visualizations" id="altair-for-visualizations">Altair for Visualizations</a></h1>
+<p>If you’ve been prototyping visualizations with another library, consider switching to Altair to build your visualizations. In my experience, I think there are three key reasons a switch could be beneficial:</p>
+<ol>
+<li>Altair is probably faster (unless we’re plotting a lot of data)</li>
+<li>It operates directly on pandas DataFrames</li>
+<li>Interactive visualizations are easy to create</li>
+</ol>
+<p>On the first point about speed, we can see a drastic speedup if we prototyped using matplotlib. Most of that speedup is just the fact that it takes more time to render a static image and place it in the app compared to rendering a javascript visualization. This is demonstrated in the example app below, which generates a scatterplot for some generated data and outputs the timing for the creation and rendering for each part of the visualization.</p>
+<pre><code class="language-python">from time import time
+
+import altair as alt
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import streamlit as st
+
+
+def mpl_scatter(dataset, x, y):
+    fig, ax = plt.subplots()
+    dataset.plot.scatter(x=x, y=y, alpha=0.8, ax=ax)
+    return fig
+
+
+def altair_scatter(dataset, x, y):
+    plot = (
+        alt.Chart(dataset, height=400, width=400)
+        .mark_point(filled=True, opacity=0.8)
+        .encode(x=x, y=y)
+    )
+    return plot
+
+
+size = st.slider(&quot;Size&quot;, min_value=1000, max_value=100_000, step=10_000)
+dataset = pd.DataFrame(
+    {&quot;x&quot;: np.random.normal(size=size), &quot;y&quot;: np.random.normal(size=size)}
+)
+
+mpl_start = time()
+mpl_plot = mpl_scatter(dataset, &quot;x&quot;, &quot;y&quot;)
+mpl_finish = time()
+
+st.pyplot(mpl_plot)
+mpl_render = time()
+st.subheader(&quot;Matplotlib&quot;)
+st.write(f&quot;Create: {mpl_finish - mpl_start:.3f}s&quot;)
+st.write(f&quot;Render: {mpl_render - mpl_finish:.3f}s&quot;)
+st.write(f&quot;Total: {mpl_render - mpl_start:.3f}s&quot;)
+
+alt_start = time()
+alt_plot = altair_scatter(dataset, &quot;x&quot;, &quot;y&quot;)
+alt_finish = time()
+
+st.altair_chart(alt_plot)
+alt_render = time()
+st.subheader(&quot;Altair&quot;)
+st.write(f&quot;Create: {alt_finish - alt_start:.3f}s&quot;)
+st.write(f&quot;Render: {alt_render - alt_finish:.3f}s&quot;)
+st.write(f&quot;Total: {alt_render - alt_start:.3f}s&quot;)
+
+speedup = (mpl_render - mpl_start) / (alt_render - alt_start)
+st.write(f&quot;MPL / Altair Ratio: {speedup:.1f}x&quot;)
+</code></pre>
+<p><a href="https://gist.github.com/pmbaumgartner/e8cf0cbdf85817aa24d51c8a8e008d7d/raw/3357054a0caaa1f4bf27277c6aaab34e0d0e747d/mpl_altair_streamlit_timing.py">Link to Gist</a></p>
+<p>Working directly with DataFrames provides another benefit. It can ease the debugging process: if there’s an issue with the input data, we can use <code>st.write(df)</code> to display the DataFrame in a streamlit app and inspect it. This makes the feedback loop for debugging data issues much shorter. The second benefit is that it reduces the amount of transformational glue code sometimes required to create specific visualizations. For basic plots, we could use a DataFrame's plotting methods, but more complex visualizations might require us to restructure our dataset in a way that makes sense with the visualization API. This additional code between the dataset and visualization can be the source of additional complexity and can be a pain point as the app grows. Since Altair uses the Vega-Lite visualization grammar, the functions available in the <a href="https://vega.github.io/vega-lite/docs/transform.html">transforms API</a> can be used to make any visualization appropriate transformations.</p>
+<p>Finally, interactive visualizations with Altair are easy. While an app might start by using streamlit widgets to filter and select data, an app could also use a visualization could as the selection mechanism. Rather than communicating information as a string in a widget or narrative, (interactive visualizations)[https://altair-viz.github.io/gallery/index.html#interactive-charts] allow visual communication of aspects of the data within a visualization.</p>
+<h1><a class="header" href="#refactoring--writing-modular-code" id="refactoring--writing-modular-code">Refactoring &amp; Writing Modular Code</a></h1>
+<p>It’s easy to spend a few hours with streamlit and have a 500 line <code>app.py</code> file that nobody but you understands. If you're handing off your code, deploying your app, or adding a some new functionality it's now possible that you'll be spending a significant amount of time trying to remember how your code works because you've neglected good code hygiene.</p>
+<p>If an app is beyond 100 lines of code, it can probably benefit from a refactor. A good first step is to create functions from the code and put those functions in a separate <code>helpers.py</code> file. This also makes it easier to test and benchmark caching on these functions.</p>
+<p>There’s no specific right way on how exactly to refactor code, but I’ve developed an exercise that can help when starting an app refactor.</p>
+<p><strong>Refactoring Exercise</strong></p>
+<p>In the <code>app.py</code>, try to:</p>
+<ul>
+<li>only import streamlit and helper functions (don’t forget to <a href="./use-caching.html">benchmark</a> <code>@st.cache</code> on these helper functions)</li>
+<li>never create a variable that isn’t input into a streamlit object, i.e. visualization or widget, in the next line of code (with the exception of the data loading function)</li>
+</ul>
+<p>These aren’t hard and fast rules to always abide by: you could follow them specifically and have a poorly organized app because you’ve got large, complex functions that do too much. However, they are good objectives to start with when moving from everything in app.py to a more modular structure.
+The example below highlights an app before and after going through this exercise.</p>
+<p><strong>⛔️ BAD EXAMPLE: PRE-REFACTOR</strong></p>
+<pre><code class="language-python"># app.py
+import streamlit as st
+import pandas as pd
+
+data = pd.read_csv(&quot;data.csv&quot;)  # no function → no cache, requires pandas import: 👎,👎
+sample = data.head(100)  # not input into streamlit object: 👎
+described_sample = sample.describe()  # input into streamlit object: ✅
+st.write(described_sample)
+
+</code></pre>
+<p><strong>✅ GOOD EXAMPLE</strong></p>
+<pre><code class="language-python"># app.py
+import streamlit as st
+from helpers import load_data, describe_sample
+
+data = load_data()  # data import: ✅
+described_sample = describe_sample(data, 100)  # input into streamlit object: ✅
+st.write(described_sample)
+
+# helpers.py
+import streamlit as st
+import pandas as pd
+
+
+@st.cache
+def load_data():
+    return pd.read_csv(&quot;data.csv&quot;)
+
+
+@st.cache
+def describe_sample(dataset, nrows):
+    sample = dataset.head(nrows)
+    return sample.describe()
+</code></pre>
+<p>Another benefit of reorganizing code in this way is that the functions in the helpers file are now easier to write tests for. Sometimes I struggle with coming up with ideas of what to test, but I’ve found that now it’s really easy to come up with tests for my apps because I’m more quickly discovering bugs and edge cases now that I’m interacting more closely with the data and code. Now, any time my app displays a traceback, I fix the function that caused it and write a test to make sure the new behavior is what I expect.</p>
+<h1><a class="header" href="#example-apps" id="example-apps">Example Apps</a></h1>
+<h2><a class="header" href="#gists" id="gists">Gists</a></h2>
+<p>The following apps are gists, which you can run directly with streamlit installed by running <code>streamlit run &lt;GIST URL&gt;</code></p>
+<ul>
+<li><a href="https://gist.github.com/pmbaumgartner/4558781c0dfe8a4539201eaeb575ba51/raw/7dedf6c4064af6586d2f136a35e4d2ac5814031f/format_func_with_dict.py">Displaying Clean Variable Names</a></li>
+<li><a href="https://gist.github.com/pmbaumgartner/8097c08313cea57f02c54f23d4836621/raw/e5f89d6ade3aca306b38a3814ef550afa4992a80/cache_benchmarking.py">Caching and Benchmarking</a></li>
+<li><a href="https://gist.github.com/pmbaumgartner/23d919cb7badd3ce4f2807af68897a75/raw/72b71923cb4db876b64fbd6283f2380d4cce1020/dynamic_widget.py">Dynamic Widgets</a></li>
+<li><a href="https://gist.github.com/pmbaumgartner/e8cf0cbdf85817aa24d51c8a8e008d7d/raw/3357054a0caaa1f4bf27277c6aaab34e0d0e747d/mpl_altair_streamlit_timing.py">Altair and Matplotlib Benchmark</a></li>
+</ul>
+<h2><a class="header" href="#full-apps" id="full-apps">Full Apps</a></h2>
+<h1><a class="header" href="#appendix" id="appendix">Appendix</a></h1>
+<h2><a class="header" href="#build-process" id="build-process">Build Process</a></h2>
+<p>This documentation is built using the wonderful Rust package <a href="https://github.com/rust-lang/mdBook">mdBook</a>.</p>
+<p>The build process is automated using GitHub Actions to host it on GitHub Pages, with the <a href="https://github.com/marketplace/actions/github-pages-action">GitHub Pages Action</a> and the <a href="https://github.com/marketplace/actions/mdbook-action">mdBook Action</a>.</p>
 
                 </main>
 
