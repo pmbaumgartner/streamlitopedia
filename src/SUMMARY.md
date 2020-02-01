@@ -8,6 +8,9 @@
 - [f-strings and Markdown](./f-strings-and-markdown.md)
 - [Altair for Visualizations](./altair-for-visualizations.md)
 - [Refactoring & Writing Modular Code](./refactoring-and-writing-modular-code.md)
+- [The Streamlit Theme](./streamlit-theme.md)
+  - [Essentials](./essentials.md)
+  - [Theming Altair](./theming-altair.md)
 
 [Example Apps](./back/example-apps.md)
 [Appendix](./back/appendix.md)
