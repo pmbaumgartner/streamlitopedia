@@ -4,7 +4,7 @@
 <head>
     <!-- Book generated using mdBook -->
     <meta charset="UTF-8">
-    <title>f-strings and Markdown - Streamlitpedia</title>
+    <title>Essentials - Streamlitpedia</title>
     
 
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -85,7 +85,7 @@
 
     <nav id="sidebar" class="sidebar" aria-label="Table of contents">
         <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html" class="active"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded "><a href="streamlit-theme.html"><strong aria-hidden="true">7.</strong> The Streamlit Theme</a></li><li><ol class="section"><li class="expanded "><a href="essentials.html"><strong aria-hidden="true">7.1.</strong> Essentials</a></li><li class="expanded "><a href="theming-altair.html"><strong aria-hidden="true">7.2.</strong> Theming Altair</a></li></ol></li><li class="expanded "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
+            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded "><a href="streamlit-theme.html"><strong aria-hidden="true">7.</strong> The Streamlit Theme</a></li><li><ol class="section"><li class="expanded "><a href="essentials.html" class="active"><strong aria-hidden="true">7.1.</strong> Essentials</a></li><li class="expanded "><a href="theming-altair.html"><strong aria-hidden="true">7.2.</strong> Theming Altair</a></li></ol></li><li class="expanded "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
         </div>
         <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
     </nav>
@@ -164,31 +164,68 @@
 
             <div id="content" class="content">
                 <main>
-                    <h1><a class="header" href="#f-strings-and-markdown" id="f-strings-and-markdown">f-strings and Markdown</a></h1>
-<p>In building an interface around an analysis, much of it requires creating or manipulating strings in variable names, widget values, axis labels, widget labels, or narrative description.</p>
-<p>If we want to display some analysis in narrative form and there’s a few particular variables we want to highlight, <a href="https://realpython.com/python-f-strings/">f-strings</a> and markdown can help us out. Beyond an easy way to fill strings with specific variable values, it’s also an easy way to format them inline. For example, we might use something like this to display basic info about a column in a dataset and highlight them in a markdown string.</p>
-<pre><code class="language-python">mean = df[&quot;values&quot;].mean()
-n_rows = len(df)
+                    <h1><a class="header" href="#theme-essentials" id="theme-essentials">Theme Essentials</a></h1>
+<h3><a class="header" href="#main-colors" id="main-colors">Main Colors</a></h3>
+<p>These colors are used throughout streamlit applications as of Feb 1, 2020.</p>
+<table><thead><tr><th>Name</th><th>Hex</th><th>Use</th></tr></thead><tbody>
+<tr><td>Primary</td><td><code>#f63366</code></td><td>Primary pink/magenta used for widgets throughout the app</td></tr>
+<tr><td>Secondary</td><td><code>#f0f2f6</code></td><td>Background color of Sidebar</td></tr>
+<tr><td>Black</td><td><code>#262730</code></td><td>Font Color</td></tr>
+<tr><td>Yellow (Light)</td><td><code>#fffd80</code></td><td>Right side of top header decoration in app</td></tr>
+<tr><td>White</td><td><code>#ffffff</code></td><td>Background</td></tr>
+</tbody></table>
+<p><a href="https://coolors.co/f63366-f0f2f6-262730-fffd80-ffffff"><img src="./images/streamlit-primary.png" alt="Streamlit Color Palette" /></a></p>
+<h3><a class="header" href="#other-secondary-colors" id="other-secondary-colors">Other Secondary Colors</a></h3>
+<p>These are defined in the <code>variables.scss</code> file <a href="#details">described below</a>, but are not heavily used within the streamlit applications.</p>
+<table><thead><tr><th>Name</th><th>Hex</th></tr></thead><tbody>
+<tr><td>Red</td><td><code>#ff2b2b</code></td></tr>
+<tr><td>Yellow</td><td><code>#faca2b</code></td></tr>
+<tr><td>Blue</td><td><code>#0068c9</code></td></tr>
+<tr><td>Green</td><td><code>#09ab3b</code></td></tr>
+</tbody></table>
+<p><a href="https://coolors.co/f63366-faca2b-0068c9-ff2b2b-09ab3b"><img src="./images/streamlit-secondary.png" alt="Streamlit Secondary Palette" /></a></p>
+<h2><a class="header" href="#fonts" id="fonts">Fonts</a></h2>
+<p>Streamlit's default fonts are from the <a href="https://fonts.google.com/featured/Plex?selection.family=IBM+Plex+Sans:700"><code>IBM Plex Collection</code></a></p>
+<p>Text, including headers and markdown, is in <a href="https://fonts.google.com/specimen/IBM+Plex+Sans"><code>IBM Plex Sans</code></a>.</p>
+<p>Code and data use <a href="https://fonts.google.com/specimen/IBM+Plex+Mono"><code>IBM Plex Mono</code></a> as the monospace font. This is used in markdown <code>code</code> blocks, the use of <code>st.echo()</code>, widget labels, <code>st.json()</code>, and rendered dataframes via <code>st.dataframe</code> and <code>st.table</code>.</p>
+<h2><a class="header" href="#details" id="details">Details</a></h2>
+<p>The essential aspects of streamlit's theme can be found in the <a href="https://github.com/streamlit/streamlit/blob/develop/frontend/src/assets/css/variables.scss"><code>variables.scss</code></a> file in the frontend assets folder in the streamlit repository.</p>
+<p>The essentials of the file are below (it's been slightly edited from the original file to remove extra information).</p>
+<pre><code class="language-scss">$gray-200: #f0f2f6;
+$gray-600: #a3a8b4;
+$gray-900: #262730;
+$black: $gray-900;
+$red: #ff2b2b;
+$yellow: #faca2b;
+$blue: #0068c9;
+$green: #09ab3b;
 
-md_results = f&quot;The mean is **{mean:.2f}** and there are **{n_rows:,}**.&quot;
+$gray-lightest: $gray-200;
+$yellow-light: #fffd80;
 
-st.markdown(md_results)
+$primary: #f63366;
+$secondary: $gray;
+
+$font-family-sans-serif: &quot;IBM Plex Sans&quot;, sans-serif;
+$font-family-monospace: &quot;IBM Plex Mono&quot;, monospace;
+
 </code></pre>
-<p>We’ve used two formats here: <code>.2f</code> to round a float to two decimal places and <code>,</code> to use a comma as a thousands separator. We've also used markdown syntax to bold the values so that they're visually prominent in the text.</p>
+<h4><a class="header" href="#bootstrap" id="bootstrap">Bootstrap</a></h4>
+<p>Streamlit uses the <a href="https://getbootstrap.com/docs/4.0/getting-started/introduction/">Bootstrap</a> framework behind the scenes. This means you can use bootstrap helper classes, for example <a href="https://getbootstrap.com/docs/4.0/content/images/"><code>img-fluid</code></a>, if you're writing HTML within Markdown.</p>
 
                 </main>
 
                 <nav class="nav-wrapper" aria-label="Page navigation">
                     <!-- Mobile navigation buttons -->
                     
-                    <a rel="prev" href="create-dynamic-widgets.html" class="mobile-nav-chapters previous"
+                    <a rel="prev" href="streamlit-theme.html" class="mobile-nav-chapters previous"
                         title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                     
 
                     
-                    <a rel="next" href="altair-for-visualizations.html" class="mobile-nav-chapters next"
+                    <a rel="next" href="theming-altair.html" class="mobile-nav-chapters next"
                         title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -201,14 +238,14 @@ st.markdown(md_results)
 
         <nav class="nav-wide-wrapper" aria-label="Page navigation">
             
-            <a href="create-dynamic-widgets.html" class="nav-chapters previous" title="Previous chapter"
+            <a href="streamlit-theme.html" class="nav-chapters previous" title="Previous chapter"
                 aria-label="Previous chapter" aria-keyshortcuts="Left">
                 <i class="fa fa-angle-left"></i>
             </a>
             
 
             
-            <a href="altair-for-visualizations.html" class="nav-chapters next" title="Next chapter"
+            <a href="theming-altair.html" class="nav-chapters next" title="Next chapter"
                 aria-label="Next chapter" aria-keyshortcuts="Right">
                 <i class="fa fa-angle-right"></i>
             </a>

@@ -4,7 +4,7 @@
 <head>
     <!-- Book generated using mdBook -->
     <meta charset="UTF-8">
-    <title>f-strings and Markdown - Streamlitpedia</title>
+    <title>The Streamlit Theme - Streamlitpedia</title>
     
 
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -85,7 +85,7 @@
 
     <nav id="sidebar" class="sidebar" aria-label="Table of contents">
         <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html" class="active"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded "><a href="streamlit-theme.html"><strong aria-hidden="true">7.</strong> The Streamlit Theme</a></li><li><ol class="section"><li class="expanded "><a href="essentials.html"><strong aria-hidden="true">7.1.</strong> Essentials</a></li><li class="expanded "><a href="theming-altair.html"><strong aria-hidden="true">7.2.</strong> Theming Altair</a></li></ol></li><li class="expanded "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
+            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">6.</strong> Refactoring &amp; Writing Modular Code</a></li><li class="expanded "><a href="streamlit-theme.html" class="active"><strong aria-hidden="true">7.</strong> The Streamlit Theme</a></li><li><ol class="section"><li class="expanded "><a href="essentials.html"><strong aria-hidden="true">7.1.</strong> Essentials</a></li><li class="expanded "><a href="theming-altair.html"><strong aria-hidden="true">7.2.</strong> Theming Altair</a></li></ol></li><li class="expanded "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
         </div>
         <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
     </nav>
@@ -164,31 +164,21 @@
 
             <div id="content" class="content">
                 <main>
-                    <h1><a class="header" href="#f-strings-and-markdown" id="f-strings-and-markdown">f-strings and Markdown</a></h1>
-<p>In building an interface around an analysis, much of it requires creating or manipulating strings in variable names, widget values, axis labels, widget labels, or narrative description.</p>
-<p>If we want to display some analysis in narrative form and there’s a few particular variables we want to highlight, <a href="https://realpython.com/python-f-strings/">f-strings</a> and markdown can help us out. Beyond an easy way to fill strings with specific variable values, it’s also an easy way to format them inline. For example, we might use something like this to display basic info about a column in a dataset and highlight them in a markdown string.</p>
-<pre><code class="language-python">mean = df[&quot;values&quot;].mean()
-n_rows = len(df)
-
-md_results = f&quot;The mean is **{mean:.2f}** and there are **{n_rows:,}**.&quot;
-
-st.markdown(md_results)
-</code></pre>
-<p>We’ve used two formats here: <code>.2f</code> to round a float to two decimal places and <code>,</code> to use a comma as a thousands separator. We've also used markdown syntax to bold the values so that they're visually prominent in the text.</p>
+                    <h1><a class="header" href="#the-streamlit-theme" id="the-streamlit-theme">The Streamlit Theme</a></h1>
 
                 </main>
 
                 <nav class="nav-wrapper" aria-label="Page navigation">
                     <!-- Mobile navigation buttons -->
                     
-                    <a rel="prev" href="create-dynamic-widgets.html" class="mobile-nav-chapters previous"
+                    <a rel="prev" href="refactoring-and-writing-modular-code.html" class="mobile-nav-chapters previous"
                         title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                     
 
                     
-                    <a rel="next" href="altair-for-visualizations.html" class="mobile-nav-chapters next"
+                    <a rel="next" href="essentials.html" class="mobile-nav-chapters next"
                         title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -201,14 +191,14 @@ st.markdown(md_results)
 
         <nav class="nav-wide-wrapper" aria-label="Page navigation">
             
-            <a href="create-dynamic-widgets.html" class="nav-chapters previous" title="Previous chapter"
+            <a href="refactoring-and-writing-modular-code.html" class="nav-chapters previous" title="Previous chapter"
                 aria-label="Previous chapter" aria-keyshortcuts="Left">
                 <i class="fa fa-angle-left"></i>
             </a>
             
 
             
-            <a href="altair-for-visualizations.html" class="nav-chapters next" title="Next chapter"
+            <a href="essentials.html" class="nav-chapters next" title="Next chapter"
                 aria-label="Next chapter" aria-keyshortcuts="Right">
                 <i class="fa fa-angle-right"></i>
             </a>
