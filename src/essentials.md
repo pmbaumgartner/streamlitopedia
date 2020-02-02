@@ -7,6 +7,7 @@
   - [Details](#details)
     - [SCSS Variables](#scss-variables)
     - [Bootstrap](#bootstrap)
+  - [Generating New Palettes](#generating-new-palettes)
 
 ## Main Colors
 
@@ -92,3 +93,7 @@ $font-family-monospace: "IBM Plex Mono", monospace;
 ### Bootstrap
 
 Streamlit uses the [Bootstrap](https://getbootstrap.com/docs/4.0/getting-started/introduction/) framework behind the scenes. This means you can use bootstrap helper classes, for example [`img-fluid`](https://getbootstrap.com/docs/4.0/content/images/), if you're writing HTML within Markdown.
+
+## Generating New Palettes
+
+If you want to generate some good looking color schemes that play off the existing streamlit colors, [colormind.io](http://colormind.io) and [coolors.co](https://coolors.co/app) are two helpful tools for creating new color schemes based off of a primary color. For generating color scales or palettes with more than 5 colors, the [Chroma.js Color Palette Helper](https://gka.github.io/palettes/#/9|s|00429d,96ffea,ffffe0|ffffe0,ff005e,93003a|1|1) can't be beat.
