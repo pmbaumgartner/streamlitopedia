@@ -3,6 +3,6 @@ authors = ["Peter B"]
 language = "en"
 multilingual = false
 src = "src"
-title = "Streamlitpedia"
+title = "Streamlitopedia"
 [output.html]
 theme = "src/theme"
