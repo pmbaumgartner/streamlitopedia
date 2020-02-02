@@ -5,7 +5,7 @@
   - [Theme Essentials](./essentials.md)
   - [Theming Altair](./theming-altair.md)
   - [Images](./sizing-and-images.md)
-- [General](./display-clean-variable-names.md)
+- [General](./markdown.md)
     - [Markdown](./markdown.md)
     - [Display Clean Variable Names](./display-clean-variable-names.md)
     - [Use Caching (and Benchmark It)](./use-caching.md)
