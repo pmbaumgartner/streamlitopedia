@@ -1,8 +1,16 @@
 # Theme Essentials
 
-### Main Colors
+- [Theme Essentials](#theme-essentials)
+  - [Main Colors](#main-colors)
+  - [Other Secondary Colors](#other-secondary-colors)
+  - [Fonts](#fonts)
+  - [Details](#details)
+    - [SCSS Variables](#scss-variables)
+    - [Bootstrap](#bootstrap)
 
-These colors are used throughout streamlit applications as of Feb 1, 2020.
+## Main Colors
+
+These colors are used throughout streamlit applications as of Feb 2, 2020.
 
 | Name           | Hex       | Use                                                      |
 | -------------- | --------- | -------------------------------------------------------- |
@@ -12,9 +20,17 @@ These colors are used throughout streamlit applications as of Feb 1, 2020.
 | Yellow (Light) | `#fffd80` | Right side of top header decoration in app               |
 | White          | `#ffffff` | Background                                               |
 
+<br>
+
+<details>
+
+<summary>View Colors</summary>
+
 [![Streamlit Color Palette](./images/streamlit-primary.png)](https://coolors.co/f63366-f0f2f6-262730-fffd80-ffffff)
 
-### Other Secondary Colors
+</details>
+
+## Other Secondary Colors
 
 These are defined in the `variables.scss` file [described below](#details), but are not heavily used within the streamlit applications.
 
@@ -25,7 +41,15 @@ These are defined in the `variables.scss` file [described below](#details), but 
 | Blue   | `#0068c9` |
 | Green  | `#09ab3b` |
 
+<br>
+
+<details>
+
+<summary>View Colors</summary>
+
 [![Streamlit Secondary Palette](./images/streamlit-secondary.png)](https://coolors.co/f63366-faca2b-0068c9-ff2b2b-09ab3b)
+
+</details>
 
 ## Fonts
 
@@ -37,6 +61,8 @@ Code and data use [`IBM Plex Mono`](https://fonts.google.com/specimen/IBM+Plex+M
 
 
 ## Details
+
+### SCSS Variables
 
 The essential aspects of streamlit's theme can be found in the [`variables.scss`](https://github.com/streamlit/streamlit/blob/develop/frontend/src/assets/css/variables.scss) file in the frontend assets folder in the streamlit repository.
 
@@ -63,6 +89,6 @@ $font-family-monospace: "IBM Plex Mono", monospace;
 
 ```
 
-#### Bootstrap
+### Bootstrap
 
 Streamlit uses the [Bootstrap](https://getbootstrap.com/docs/4.0/getting-started/introduction/) framework behind the scenes. This means you can use bootstrap helper classes, for example [`img-fluid`](https://getbootstrap.com/docs/4.0/content/images/), if you're writing HTML within Markdown.
