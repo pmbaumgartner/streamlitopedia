@@ -87,7 +87,7 @@
 
     <nav id="sidebar" class="sidebar" aria-label="Table of contents">
         <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="streamlit-theme.html"><strong aria-hidden="true">1.</strong> Design</a></li><li><ol class="section"><li class="expanded "><a href="essentials.html"><strong aria-hidden="true">1.1.</strong> Theme Essentials</a></li><li class="expanded "><a href="theming-altair.html"><strong aria-hidden="true">1.2.</strong> Theming Altair</a></li><li class="expanded "><a href="sizing-and-images.html"><strong aria-hidden="true">1.3.</strong> Images</a></li></ol></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">2.</strong> General</a></li><li><ol class="section"><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">2.1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">2.3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">2.4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">2.5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">2.6.</strong> Refactoring &amp; Writing Modular Code</a></li></ol></li><li class="expanded "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
+            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="essentials.html"><strong aria-hidden="true">1.</strong> Design</a></li><li><ol class="section"><li class="expanded "><a href="essentials.html"><strong aria-hidden="true">1.1.</strong> Theme Essentials</a></li><li class="expanded "><a href="theming-altair.html"><strong aria-hidden="true">1.2.</strong> Theming Altair</a></li><li class="expanded "><a href="sizing-and-images.html"><strong aria-hidden="true">1.3.</strong> Images</a></li></ol></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">2.</strong> General</a></li><li><ol class="section"><li class="expanded "><a href="markdown.html"><strong aria-hidden="true">2.1.</strong> Markdown</a></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">2.2.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.3.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">2.4.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">2.5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">2.6.</strong> Refactoring &amp; Writing Modular Code</a></li></ol></li><li class="expanded "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
         </div>
         <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
     </nav>
@@ -168,7 +168,10 @@
                 <main>
                     <h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
 <p>This is a collection of tools, code snippets, and ideas that I've found helpful when making <a href="https://www.streamlit.io/">streamlit</a> apps. Use the table of contents on the left to navigate.</p>
-<h1><a class="header" href="#the-streamlit-theme" id="the-streamlit-theme">The Streamlit Theme</a></h1>
+<p>These are essentially a public version of notes I was taking on patterns that emerged built some apps. It is not meant to be an exhaustive list of anything, but I wanted to make them public in case others find these ideas helpful.</p>
+<p>Much of the content is from an article I wrote called <a href="https://towardsdatascience.com/intermediate-streamlit-d5a1381daa65?source=friends_link&amp;sk=7badbd5f047a234cd70784a438082a76">Intermediate Streamlit</a>. The content that is new is all of the <a href="front/../essentials.html">Design</a> content and an updated page on using <a href="front/../markdown.html">Markdown</a>. </p>
+<p>Thanks for reading.</p>
+<p><a href="https://twitter.com/pmbaumgartner">- Peter</a></p>
 <h1><a class="header" href="#theme-essentials" id="theme-essentials">Theme Essentials</a></h1>
 <ul>
 <li><a href="essentials.html#theme-essentials">Theme Essentials</a>
@@ -243,6 +246,81 @@ $font-family-monospace: &quot;IBM Plex Mono&quot;, monospace;
 <h3><a class="header" href="#bootstrap" id="bootstrap">Bootstrap</a></h3>
 <p>Streamlit uses the <a href="https://getbootstrap.com/docs/4.0/getting-started/introduction/">Bootstrap</a> framework behind the scenes. This means you can use bootstrap helper classes, for example <a href="https://getbootstrap.com/docs/4.0/content/images/"><code>img-fluid</code></a>, if you're writing HTML within Markdown.</p>
 <h2><a class="header" href="#generating-new-palettes" id="generating-new-palettes">Generating New Palettes</a></h2>
+<p>If you want to generate some good looking color schemes that play off the existing streamlit colors, <a href="http://colormind.io">colormind.io</a> and <a href="https://coolors.co/app">coolors.co</a> are two helpful tools for creating new color schemes based off of a primary color. For generating color scales or palettes with more than 5 colors, the <a href="https://gka.github.io/palettes/#/9%7Cs%7C00429d,96ffea,ffffe0%7Cffffe0,ff005e,93003a%7C1%7C1">Chroma.js Color Palette Helper</a> can't be beat.</p>
+<h1><a class="header" href="#theme-essentials-1" id="theme-essentials-1">Theme Essentials</a></h1>
+<ul>
+<li><a href="essentials.html#theme-essentials">Theme Essentials</a>
+<ul>
+<li><a href="essentials.html#main-colors">Main Colors</a></li>
+<li><a href="essentials.html#other-secondary-colors">Other Secondary Colors</a></li>
+<li><a href="essentials.html#fonts">Fonts</a></li>
+<li><a href="essentials.html#details">Details</a>
+<ul>
+<li><a href="essentials.html#scss-variables">SCSS Variables</a></li>
+<li><a href="essentials.html#bootstrap">Bootstrap</a></li>
+</ul>
+</li>
+<li><a href="essentials.html#generating-new-palettes">Generating New Palettes</a></li>
+</ul>
+</li>
+</ul>
+<h2><a class="header" href="#main-colors-1" id="main-colors-1">Main Colors</a></h2>
+<p>These colors are used throughout streamlit applications as of Feb 2, 2020.</p>
+<table><thead><tr><th>Name</th><th>Hex</th><th>Use</th></tr></thead><tbody>
+<tr><td>Primary</td><td><code>#f63366</code></td><td>Primary pink/magenta used for widgets throughout the app</td></tr>
+<tr><td>Secondary</td><td><code>#f0f2f6</code></td><td>Background color of Sidebar</td></tr>
+<tr><td>Black</td><td><code>#262730</code></td><td>Font Color</td></tr>
+<tr><td>Yellow (Light)</td><td><code>#fffd80</code></td><td>Right side of top header decoration in app</td></tr>
+<tr><td>White</td><td><code>#ffffff</code></td><td>Background</td></tr>
+</tbody></table>
+<br>
+<details>
+<summary>View Colors</summary>
+<p><a href="https://coolors.co/f63366-f0f2f6-262730-fffd80-ffffff"><img src="./images/streamlit-primary.png" alt="Streamlit Color Palette" /></a></p>
+</details>
+<h2><a class="header" href="#other-secondary-colors-1" id="other-secondary-colors-1">Other Secondary Colors</a></h2>
+<p>These are defined in the <code>variables.scss</code> file <a href="essentials.html#details">described below</a>, but are not heavily used within the streamlit applications.</p>
+<table><thead><tr><th>Name</th><th>Hex</th></tr></thead><tbody>
+<tr><td>Red</td><td><code>#ff2b2b</code></td></tr>
+<tr><td>Yellow</td><td><code>#faca2b</code></td></tr>
+<tr><td>Blue</td><td><code>#0068c9</code></td></tr>
+<tr><td>Green</td><td><code>#09ab3b</code></td></tr>
+</tbody></table>
+<br>
+<details>
+<summary>View Colors</summary>
+<p><a href="https://coolors.co/f63366-faca2b-0068c9-ff2b2b-09ab3b"><img src="./images/streamlit-secondary.png" alt="Streamlit Secondary Palette" /></a></p>
+</details>
+<h2><a class="header" href="#fonts-1" id="fonts-1">Fonts</a></h2>
+<p>Streamlit's default fonts are from the <a href="https://fonts.google.com/featured/Plex?selection.family=IBM+Plex+Sans:700"><code>IBM Plex Collection</code></a></p>
+<p>Text, including headers and markdown, is in <a href="https://fonts.google.com/specimen/IBM+Plex+Sans"><code>IBM Plex Sans</code></a>.</p>
+<p>Code and data use <a href="https://fonts.google.com/specimen/IBM+Plex+Mono"><code>IBM Plex Mono</code></a> as the monospace font. This is used in markdown <code>code</code> blocks, the use of <code>st.echo()</code>, widget labels, <code>st.json()</code>, and rendered dataframes via <code>st.dataframe</code> and <code>st.table</code>.</p>
+<h2><a class="header" href="#details-1" id="details-1">Details</a></h2>
+<h3><a class="header" href="#scss-variables-1" id="scss-variables-1">SCSS Variables</a></h3>
+<p>The essential aspects of streamlit's theme can be found in the <a href="https://github.com/streamlit/streamlit/blob/develop/frontend/src/assets/css/variables.scss"><code>variables.scss</code></a> file in the frontend assets folder in the streamlit repository.</p>
+<p>The essentials of the file are below (it's been slightly edited from the original file to remove extra information).</p>
+<pre><code class="language-scss">$gray-200: #f0f2f6;
+$gray-600: #a3a8b4;
+$gray-900: #262730;
+$black: $gray-900;
+$red: #ff2b2b;
+$yellow: #faca2b;
+$blue: #0068c9;
+$green: #09ab3b;
+
+$gray-lightest: $gray-200;
+$yellow-light: #fffd80;
+
+$primary: #f63366;
+$secondary: $gray;
+
+$font-family-sans-serif: &quot;IBM Plex Sans&quot;, sans-serif;
+$font-family-monospace: &quot;IBM Plex Mono&quot;, monospace;
+
+</code></pre>
+<h3><a class="header" href="#bootstrap-1" id="bootstrap-1">Bootstrap</a></h3>
+<p>Streamlit uses the <a href="https://getbootstrap.com/docs/4.0/getting-started/introduction/">Bootstrap</a> framework behind the scenes. This means you can use bootstrap helper classes, for example <a href="https://getbootstrap.com/docs/4.0/content/images/"><code>img-fluid</code></a>, if you're writing HTML within Markdown.</p>
+<h2><a class="header" href="#generating-new-palettes-1" id="generating-new-palettes-1">Generating New Palettes</a></h2>
 <p>If you want to generate some good looking color schemes that play off the existing streamlit colors, <a href="http://colormind.io">colormind.io</a> and <a href="https://coolors.co/app">coolors.co</a> are two helpful tools for creating new color schemes based off of a primary color. For generating color scales or palettes with more than 5 colors, the <a href="https://gka.github.io/palettes/#/9%7Cs%7C00429d,96ffea,ffffe0%7Cffffe0,ff005e,93003a%7C1%7C1">Chroma.js Color Palette Helper</a> can't be beat.</p>
 <h1><a class="header" href="#theming-altair" id="theming-altair">Theming Altair</a></h1>
 <ul>
@@ -536,7 +614,7 @@ alt.themes.enable(&quot;streamlit&quot;)
 <h2><a class="header" href="#container-sizes" id="container-sizes">Container Sizes</a></h2>
 <p><code>As of Feb 2, 2020.</code></p>
 <p>The main container content is <code>698px</code> wide. The sidebar content is <code>304px</code> wide.</p>
-<h3><a class="header" href="#details-1" id="details-1">Details</a></h3>
+<h3><a class="header" href="#details-2" id="details-2">Details</a></h3>
 <p>Images detailing how these numbers were determined are expandable below.</p>
 <br>
 <details>
@@ -612,6 +690,85 @@ column = st.selectbox(&quot;Describe Column&quot;, list(dataset.columns), format
 st.write(dataset[column].describe())
 </code></pre>
 <p><a href="https://gist.github.com/pmbaumgartner/4558781c0dfe8a4539201eaeb575ba51/raw/7dedf6c4064af6586d2f136a35e4d2ac5814031f/format_func_with_dict.py">Link to Gist</a></p>
+<h1><a class="header" href="#markdown" id="markdown">Markdown</a></h1>
+<ul>
+<li><a href="markdown.html#markdown">Markdown</a>
+<ul>
+<li><a href="markdown.html#summary">Summary</a></li>
+<li><a href="markdown.html#using-markdown-files">Using Markdown Files</a></li>
+<li><a href="markdown.html#conditionally-displaying-long-content">Conditionally Displaying Long Content</a>
+<ul>
+<li><a href="markdown.html#hide-it-with-a-stcheckbox">Hide it with a <code>st.checkbox</code></a></li>
+<li><a href="markdown.html#use-detailssummary-elements-in-markdown">Use <code>&lt;details&gt;&lt;summary&gt;</code> Elements in Markdown</a></li>
+</ul>
+</li>
+<li><a href="markdown.html#use-small-elements">Use <code>&lt;small&gt;</code> Elements</a></li>
+<li><a href="markdown.html#use-stmarkdown%22---%22-for-visual-separation">Use <code>st.markdown(&quot;---&quot;)</code> for Visual Separation</a></li>
+<li><a href="markdown.html#dont-forget-emoji">Don't Forget Emoji</a></li>
+<li><a href="markdown.html#combine-f-strings-with-markdown">Combine f-strings with Markdown</a></li>
+</ul>
+</li>
+</ul>
+<h2><a class="header" href="#summary-2" id="summary-2">Summary</a></h2>
+<p>Markdown has several uses within a streamlit application. As the only tool for custom HTML within a streamlit app, you can use it to flexibly insert rich content into your application.</p>
+<h2><a class="header" href="#using-markdown-files" id="using-markdown-files">Using Markdown Files</a></h2>
+<p>If you have content beyond a sentence in length or want an easier way to write multi-line markdown content, create a separate markdown file and import that content into your app where needed.</p>
+<p>For example, your app might have some introductory text. Create an <code>introduction.md</code> file and write in there, then import the content into a markdown widget.</p>
+<pre><code class="language-python">from pathlib import Path
+import streamlit as st
+
+def read_markdown_file(markdown_file):
+    return Path(markdown_file).read_text()
+
+intro_markdown = read_markdown_file(&quot;introduction.md&quot;)
+st.markdown(intro_markdown, unsafe_allow_html=True)
+</code></pre>
+<h2><a class="header" href="#conditionally-displaying-long-content" id="conditionally-displaying-long-content">Conditionally Displaying Long Content</a></h2>
+<p>If you use the method above to write and display long markdown content, you might not want to always have the content displayed since it takes up a significant portion of the app's screen real estate. There are two options.</p>
+<h3><a class="header" href="#hide-it-with-a-stcheckbox" id="hide-it-with-a-stcheckbox">Hide it with a <code>st.checkbox</code></a></h3>
+<p>In this example, let's say there's a data dictionary in <code>data_dictionary.md</code>. We can then use a <code>st.checkbox</code> to display this content somewhere when the checkbox is checked.</p>
+<pre><code class="language-python">dict_check = st.checkbox(&quot;Data Dictionary&quot;)
+dict_markdown = read_markdown_file(&quot;data_dictionary.md&quot;)
+
+if dict_check:
+    st.markdown(dict_check, unsafe_allow_html=True)
+</code></pre>
+<h3><a class="header" href="#use-detailssummary-elements-in-markdown" id="use-detailssummary-elements-in-markdown">Use <code>&lt;details&gt;&lt;summary&gt;</code> Elements in Markdown</a></h3>
+<p>Since you can use HTML in markdown, you can take advantage of the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details"><code>&lt;details&gt;</code> element</a>. Rather than using a streamlit widget, you &quot;write&quot; the widget using these elements in markdown. </p>
+<p>For example, in a <code>data_dictionary.md</code> file, you would do the following:</p>
+<pre><code class="language-markdown">&lt;details&gt;
+&lt;summary&gt;Data Dictionary&lt;/summary&gt;
+
+## Data Dictionary
+
+- Variable 1: this is variable 1
+- Variable 2: this is variable 2
+...
+
+&lt;/details&gt;
+</code></pre>
+<p>Remember that this will require you to pass <code>unsafe_allow_html=True</code> into <code>st.markdown</code>.</p>
+<h2><a class="header" href="#use-small-elements" id="use-small-elements">Use <code>&lt;small&gt;</code> Elements</a></h2>
+<p>If you have some disclaimer text that you want to display with a smaller font size, wrap it with a <code>&lt;small&gt;</code> tag within your markdown. The interaction with markdown and <code>&lt;small&gt;</code> is a little tricky. You'll likely have to wrap each markdown <em>element</em> (i.e. paragraph, single bullet, etc.) with the tag -- not just put the tag around everything you'd like to be small.</p>
+<p>Remember that this will require you to pass <code>unsafe_allow_html=True</code> into <code>st.markdown</code>.</p>
+<h2><a class="header" href="#use-stmarkdown----for-visual-separation" id="use-stmarkdown----for-visual-separation">Use <code>st.markdown(&quot;---&quot;)</code> for Visual Separation</a></h2>
+<p>In markdown, <code>---</code> will create a horizontal rule <code>&lt;hr&gt;</code> element. These can be helpful to section your application. For example in the <a href="https://dank-data-explorer.herokuapp.com/">Dank Data Explorer</a> the app is sectioned into 4 distinct parts: the sidebar configuration options, the app details, the header of the app, and the body of the app.</p>
+<p><img src="./images/hr-sections.png" alt="Sectioning with ---" /></p>
+<p><small>Sections of app in blue, <code>&lt;hr&gt;</code> elements surrounded by orange.</small></p>
+<h2><a class="header" href="#dont-forget-emoji" id="dont-forget-emoji">Don't Forget Emoji</a></h2>
+<p>Emoji can serve as little icons to highlight certain functionality of your app. For example, <code>ℹ️</code> can be used to indicate contextual information, or <code>✅</code> and <code>🚫</code> can be used for positive and negative examples.</p>
+<p>There are also several styles of emoji numerials (<code>① ⑴ ⓵ ❶</code>) that can be used to guide a user through the sequence of options within your app.</p>
+<h2><a class="header" href="#combine-f-strings-with-markdown" id="combine-f-strings-with-markdown">Combine f-strings with Markdown</a></h2>
+<p>In building an interface around an analysis, much of it requires creating or manipulating strings in variable names, widget values, axis labels, widget labels, or narrative description.</p>
+<p>If we want to display some analysis in narrative form and there’s a few particular variables we want to highlight, <a href="https://realpython.com/python-f-strings/">f-strings</a> and markdown can help us out. Beyond an easy way to fill strings with specific variable values, it’s also an easy way to format them inline. For example, we might use something like this to display basic info about a column in a dataset and highlight them in a markdown string.</p>
+<pre><code class="language-python">mean = df[&quot;values&quot;].mean()
+n_rows = len(df)
+
+md_results = f&quot;The mean is **{mean:.2f}** and there are **{n_rows:,}**.&quot;
+
+st.markdown(md_results)
+</code></pre>
+<p>We’ve used two formats here: <code>.2f</code> to round a float to two decimal places and <code>,</code> to use a comma as a thousands separator. We've also used markdown syntax to bold the values so that they're visually prominent in the text.</p>
 <h1><a class="header" href="#display-clean-variable-names-1" id="display-clean-variable-names-1">Display Clean Variable Names</a></h1>
 <p>The variable names in a DataFrame might be snake cased or formatted in a way not appropriate for end users, e.g. <code>pointless_metric_my_boss_requested_and_i_reluctantly_included</code>. Most of the streamlit widgets contain a <code>format_func</code> parameter which takes function that applies formatting for display to the option values you provide the widget. As a simple example, you could title case each of the variable names.</p>
 <p>You can also use this functionality, combined with a dictionary, to explicitly handle the formatting of your values. The example below cleans up the column names from the birdstrikes dataset for use as a dropdown to describe each column.</p>
@@ -760,17 +917,6 @@ plot = alt.Chart(cars).mark_circle().encode(x=x, y=y)
 st.altair_chart(plot)
 </code></pre>
 <p><a href="https://gist.github.com/pmbaumgartner/23d919cb7badd3ce4f2807af68897a75/raw/72b71923cb4db876b64fbd6283f2380d4cce1020/dynamic_widget.py">Link to Gist</a></p>
-<h1><a class="header" href="#f-strings-and-markdown" id="f-strings-and-markdown">f-strings and Markdown</a></h1>
-<p>In building an interface around an analysis, much of it requires creating or manipulating strings in variable names, widget values, axis labels, widget labels, or narrative description.</p>
-<p>If we want to display some analysis in narrative form and there’s a few particular variables we want to highlight, <a href="https://realpython.com/python-f-strings/">f-strings</a> and markdown can help us out. Beyond an easy way to fill strings with specific variable values, it’s also an easy way to format them inline. For example, we might use something like this to display basic info about a column in a dataset and highlight them in a markdown string.</p>
-<pre><code class="language-python">mean = df[&quot;values&quot;].mean()
-n_rows = len(df)
-
-md_results = f&quot;The mean is **{mean:.2f}** and there are **{n_rows:,}**.&quot;
-
-st.markdown(md_results)
-</code></pre>
-<p>We’ve used two formats here: <code>.2f</code> to round a float to two decimal places and <code>,</code> to use a comma as a thousands separator. We've also used markdown syntax to bold the values so that they're visually prominent in the text.</p>
 <h1><a class="header" href="#altair-for-visualizations" id="altair-for-visualizations">Altair for Visualizations</a></h1>
 <p>If you’ve been prototyping visualizations with another library, consider switching to Altair to build your visualizations. In my experience, I think there are three key reasons a switch could be beneficial:</p>
 <ol>
@@ -895,11 +1041,16 @@ def describe_sample(dataset, nrows):
 </ul>
 <h2><a class="header" href="#full-apps" id="full-apps">Full Apps</a></h2>
 <ul>
-<li><a href="https://dank-data-explorer.herokuapp.com/">Dank Data Explorer</a></li>
+<li><a href="https://dank-data-explorer.herokuapp.com/">Dank Data Explorer</a>
+<ul>
+<li>💡 This app was created to serve as an example of many of the <a href="back/../essentials.html">Design</a> and <a href="back/../markdown.html">Markdown</a> ideas.</li>
+</ul>
+</li>
 <li><a href="https://spotify-features-reducer.herokuapp.com/">Spotify Track Orderer</a></li>
 <li><a href="http://pdf-table-extractor.herokuapp.com/">PDF Table Extractor</a></li>
 <li><a href="https://distribution-fitter-5000.herokuapp.com/">Distribution Fitter</a></li>
 </ul>
+<p><a href="https://awesome-streamlit.org/">Awesome-Streamlit</a> contains many more examples of streamlit apps.</p>
 <h1><a class="header" href="#appendix" id="appendix">Appendix</a></h1>
 <h2><a class="header" href="#build-process" id="build-process">Build Process</a></h2>
 <p>This documentation is built using the wonderful Rust package <a href="https://github.com/rust-lang/mdBook">mdBook</a>.</p>
