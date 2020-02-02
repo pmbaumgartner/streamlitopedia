@@ -4,7 +4,7 @@
 <head>
     <!-- Book generated using mdBook -->
     <meta charset="UTF-8">
-    <title>Refactoring &amp; Writing Modular Code - Streamlitpedia</title>
+    <title>Images - Streamlitpedia</title>
     
 
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -85,7 +85,7 @@
 
     <nav id="sidebar" class="sidebar" aria-label="Table of contents">
         <div id="sidebar-scrollbox" class="sidebar-scrollbox">
-            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="streamlit-theme.html"><strong aria-hidden="true">1.</strong> Design</a></li><li><ol class="section"><li class="expanded "><a href="essentials.html"><strong aria-hidden="true">1.1.</strong> Theme Essentials</a></li><li class="expanded "><a href="theming-altair.html"><strong aria-hidden="true">1.2.</strong> Theming Altair</a></li><li class="expanded "><a href="sizing-and-images.html"><strong aria-hidden="true">1.3.</strong> Images</a></li></ol></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">2.</strong> General</a></li><li><ol class="section"><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">2.1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">2.3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">2.4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">2.5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html" class="active"><strong aria-hidden="true">2.6.</strong> Refactoring &amp; Writing Modular Code</a></li></ol></li><li class="expanded "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
+            <ol class="chapter"><li class="expanded affix "><a href="front/introduction.html">Introduction</a></li><li class="expanded "><a href="streamlit-theme.html"><strong aria-hidden="true">1.</strong> Design</a></li><li><ol class="section"><li class="expanded "><a href="essentials.html"><strong aria-hidden="true">1.1.</strong> Theme Essentials</a></li><li class="expanded "><a href="theming-altair.html"><strong aria-hidden="true">1.2.</strong> Theming Altair</a></li><li class="expanded "><a href="sizing-and-images.html" class="active"><strong aria-hidden="true">1.3.</strong> Images</a></li></ol></li><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">2.</strong> General</a></li><li><ol class="section"><li class="expanded "><a href="display-clean-variable-names.html"><strong aria-hidden="true">2.1.</strong> Display Clean Variable Names</a></li><li class="expanded "><a href="use-caching.html"><strong aria-hidden="true">2.2.</strong> Use Caching (and Benchmark It)</a></li><li class="expanded "><a href="create-dynamic-widgets.html"><strong aria-hidden="true">2.3.</strong> Create Dynamic Widgets</a></li><li class="expanded "><a href="f-strings-and-markdown.html"><strong aria-hidden="true">2.4.</strong> f-strings and Markdown</a></li><li class="expanded "><a href="altair-for-visualizations.html"><strong aria-hidden="true">2.5.</strong> Altair for Visualizations</a></li><li class="expanded "><a href="refactoring-and-writing-modular-code.html"><strong aria-hidden="true">2.6.</strong> Refactoring &amp; Writing Modular Code</a></li></ol></li><li class="expanded "><a href="back/example-apps.html">Example Apps</a></li><li class="expanded affix "><a href="back/appendix.html">Appendix</a></li></ol>
         </div>
         <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
     </nav>
@@ -164,68 +164,84 @@
 
             <div id="content" class="content">
                 <main>
-                    <h1><a class="header" href="#refactoring--writing-modular-code" id="refactoring--writing-modular-code">Refactoring &amp; Writing Modular Code</a></h1>
-<p>It’s easy to spend a few hours with streamlit and have a 500 line <code>app.py</code> file that nobody but you understands. If you're handing off your code, deploying your app, or adding a some new functionality it's now possible that you'll be spending a significant amount of time trying to remember how your code works because you've neglected good code hygiene.</p>
-<p>If an app is beyond 100 lines of code, it can probably benefit from a refactor. A good first step is to create functions from the code and put those functions in a separate <code>helpers.py</code> file. This also makes it easier to test and benchmark caching on these functions.</p>
-<p>There’s no specific right way on how exactly to refactor code, but I’ve developed an exercise that can help when starting an app refactor.</p>
-<p><strong>Refactoring Exercise</strong></p>
-<p>In the <code>app.py</code>, try to:</p>
+                    <h1><a class="header" href="#images" id="images">Images</a></h1>
 <ul>
-<li>only import streamlit and helper functions (don’t forget to <a href="./use-caching.html">benchmark</a> <code>@st.cache</code> on these helper functions)</li>
-<li>never create a variable that isn’t input into a streamlit object, i.e. visualization or widget, in the next line of code (with the exception of the data loading function)</li>
+<li><a href="#images">Images</a>
+<ul>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#container-sizes">Container Sizes</a>
+<ul>
+<li><a href="#details">Details</a></li>
 </ul>
-<p>These aren’t hard and fast rules to always abide by: you could follow them specifically and have a poorly organized app because you’ve got large, complex functions that do too much. However, they are good objectives to start with when moving from everything in app.py to a more modular structure.
-The example below highlights an app before and after going through this exercise.</p>
-<p><strong>⛔️ BAD EXAMPLE: PRE-REFACTOR</strong></p>
-<pre><code class="language-python"># app.py
-import streamlit as st
-import pandas as pd
-
-data = pd.read_csv(&quot;data.csv&quot;)  # no function → no cache, requires pandas import: 👎,👎
-sample = data.head(100)  # not input into streamlit object: 👎
-described_sample = sample.describe()  # input into streamlit object: ✅
-st.write(described_sample)
-
+</li>
+<li><a href="#creating-header-images">Creating Header Images</a>
+<ul>
+<li><a href="#using-figma">Using Figma</a></li>
+</ul>
+</li>
+<li><a href="#displaying-your-image-in-app">Displaying Your Image in App</a></li>
+</ul>
+</li>
+</ul>
+<h2><a class="header" href="#summary" id="summary">Summary</a></h2>
+<p>Images can be used to flexibly add header content, additional instructions, brand logos, or other information about your app. I've found it easiest to design images for the default width of the main container and sidebar for an app viewed on desktop. Since I don't need to view these images fullscreen or use the in an interactive way throughout the app, I use a helper function to convert images to bytes and display them as HTML through a <code>st.markdown</code>, rather than using <code>st.image</code>. I'll cover all these steps below.</p>
+<h2><a class="header" href="#container-sizes" id="container-sizes">Container Sizes</a></h2>
+<p><code>As of Feb 2, 2020.</code></p>
+<p>The main container content is <code>698px</code> wide. The sidebar content is <code>304px</code> wide.</p>
+<h3><a class="header" href="#details" id="details">Details</a></h3>
+<p>Images detailing how these numbers were determined are expandable below.</p>
+<br>
+<details>
+<summary>View Main Content Width Determination</summary>
+<p><a href="./images/main-width.png"><img src="./images/main-width.png" alt="Main Content Width" /></a></p>
+</details>
+<br>
+<details>
+<summary>View Sidebar Width Determination</summary>
+<p><a href="./images/sidebar-width.png"><img src="./images/sidebar-width.png" alt="Sidebar Content Width" /></a></p>
+</details>
+<h2><a class="header" href="#creating-header-images" id="creating-header-images">Creating Header Images</a></h2>
+<p>One simple use case for images is rich header images for your applications. An image allows you to display rich information about your brand. </p>
+<p>If you want to match the other content in your application, use the information from the <a href="./essentials.html">Theme Essentials</a>. You can download <a href="https://fonts.google.com/specimen/IBM+Plex+Sans"><code>IBM Plex Sans</code></a> and <a href="https://fonts.google.com/specimen/IBM+Plex+Mono"><code>IBM Plex Mono</code></a> from Google Fonts for local use.</p>
+<p>The most staightforward way I've found to create header images, especially if they're mostly text, is to use <a href="https://www.figma.com/">Figma</a>. Figma is a tool typically used for designing interfaces, but I typically use it for more lightweight design tasks like creating simple image assets. As a plus, Figma is really easy to learn and has a relatively simple interface.</p>
+<h3><a class="header" href="#using-figma" id="using-figma">Using Figma</a></h3>
+<p><a href="./images/figma-example.png"><img src="./images/figma-example.png" alt="Figma Example" /></a></p>
+<ol>
+<li>First, use the Frame tool to create a frame. This is a container for your image. Create the frame so it has a width of the streamlit container where it will be placed. You can adjust the height so it makes sense for your content.</li>
+<li>Design to your heart's content. Start simple by using IBM Plex Sans as your font and the standard streamlit colors. Some simple elements to play around with are character spacing, all caps, and gradient scaling your text.</li>
+<li>Once you're finished, select your Frame then use the Export menu in the lower right to export your image to your streamlit app directory.</li>
+</ol>
+<h2><a class="header" href="#displaying-your-image-in-app" id="displaying-your-image-in-app">Displaying Your Image in App</a></h2>
+<p>Since I don't need any interaction with the image, I display the HTML through <code>st.markdown</code> rather than <code>st.image</code>. </p>
+<p>We'll convert the image to bytes so that it can be displayed using an <code>&lt;img&gt;</code> HTML element. The helper function below takes the path to the image (from your <code>app.py</code>) and converts it to bytes.</p>
+<pre><code class="language-python">def img_to_bytes(img_path):
+    img_bytes = Path(img_path).read_bytes()
+    encoded = base64.b64encode(img_bytes).decode()
+    return encoded
 </code></pre>
-<p><strong>✅ GOOD EXAMPLE</strong></p>
-<pre><code class="language-python"># app.py
-import streamlit as st
-from helpers import load_data, describe_sample
-
-data = load_data()  # data import: ✅
-described_sample = describe_sample(data, 100)  # input into streamlit object: ✅
-st.write(described_sample)
-
-# helpers.py
-import streamlit as st
-import pandas as pd
-
-
-@st.cache
-def load_data():
-    return pd.read_csv(&quot;data.csv&quot;)
-
-
-@st.cache
-def describe_sample(dataset, nrows):
-    sample = dataset.head(nrows)
-    return sample.describe()
+<p>From there, you can use the image in your app as follows:</p>
+<pre><code class="language-python">header_html = &quot;&lt;img src='data:image/png;base64,{}' class='img-fluid'&gt;&quot;.format(
+    img_to_bytes(&quot;header.png&quot;)
+)
+st.markdown(
+    header_html, unsafe_allow_html=True,
+)
 </code></pre>
-<p>Another benefit of reorganizing code in this way is that the functions in the helpers file are now easier to write tests for. Sometimes I struggle with coming up with ideas of what to test, but I’ve found that now it’s really easy to come up with tests for my apps because I’m more quickly discovering bugs and edge cases now that I’m interacting more closely with the data and code. Now, any time my app displays a traceback, I fix the function that caused it and write a test to make sure the new behavior is what I expect.</p>
+<p>Streamlit uses bootstrap, so we can take advantage of the <code>img-fluid</code> class to make sure that the image is responsive as the app is resized. </p>
 
                 </main>
 
                 <nav class="nav-wrapper" aria-label="Page navigation">
                     <!-- Mobile navigation buttons -->
                     
-                    <a rel="prev" href="altair-for-visualizations.html" class="mobile-nav-chapters previous"
+                    <a rel="prev" href="theming-altair.html" class="mobile-nav-chapters previous"
                         title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                     
 
                     
-                    <a rel="next" href="back/example-apps.html" class="mobile-nav-chapters next"
+                    <a rel="next" href="display-clean-variable-names.html" class="mobile-nav-chapters next"
                         title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -238,14 +254,14 @@ def describe_sample(dataset, nrows):
 
         <nav class="nav-wide-wrapper" aria-label="Page navigation">
             
-            <a href="altair-for-visualizations.html" class="nav-chapters previous" title="Previous chapter"
+            <a href="theming-altair.html" class="nav-chapters previous" title="Previous chapter"
                 aria-label="Previous chapter" aria-keyshortcuts="Left">
                 <i class="fa fa-angle-left"></i>
             </a>
             
 
             
-            <a href="back/example-apps.html" class="nav-chapters next" title="Next chapter"
+            <a href="display-clean-variable-names.html" class="nav-chapters next" title="Next chapter"
                 aria-label="Next chapter" aria-keyshortcuts="Right">
                 <i class="fa fa-angle-right"></i>
             </a>
