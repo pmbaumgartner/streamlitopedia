@@ -12,6 +12,9 @@ The following apps are gists, which you can run directly with streamlit installe
 ## Full Apps
 
 - [Dank Data Explorer](https://dank-data-explorer.herokuapp.com/)
+  - 💡 This app was created to serve as an example of many of the [Design](../essentials.md) and [Markdown](../markdown.md) ideas.
 - [Spotify Track Orderer](https://spotify-features-reducer.herokuapp.com/)
 - [PDF Table Extractor](http://pdf-table-extractor.herokuapp.com/)
 - [Distribution Fitter](https://distribution-fitter-5000.herokuapp.com/)
+
+[Awesome-Streamlit](https://awesome-streamlit.org/) contains many more examples of streamlit apps.
