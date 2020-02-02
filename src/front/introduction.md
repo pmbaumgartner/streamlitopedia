@@ -9,7 +9,7 @@ Much of the content is from an article I wrote called [Intermediate Streamlit](h
 Some notes:
 1. Use the table of contents on the left to navigate.
 2. The magnifying glass in the header is a search button you can use to search the full text of these notes.
-3. If you find any errors, feel free to open a PR.
+3. If you find any errors feel free to [open a PR](https://github.com/pmbaumgartner/streamlitopedia/pulls).
 
 Thanks for reading.
 
