@@ -42,7 +42,7 @@ Images detailing how these numbers were determined are expandable below.
 
 ## Creating Header Images
 
-One simple use case for images is rich header images for your applications. An image allows you to display rich information about your brand. 
+One simple use case for images is a header image for your applications.
 
 If you want to match the other content in your application, use the information from the [Theme Essentials](./essentials.md). You can download [`IBM Plex Sans`](https://fonts.google.com/specimen/IBM+Plex+Sans) and [`IBM Plex Mono`](https://fonts.google.com/specimen/IBM+Plex+Mono) from Google Fonts for local use.
 
