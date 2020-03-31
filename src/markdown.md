@@ -44,7 +44,7 @@ dict_check = st.checkbox("Data Dictionary")
 dict_markdown = read_markdown_file("data_dictionary.md")
 
 if dict_check:
-    st.markdown(dict_check, unsafe_allow_html=True)
+    st.markdown(dict_markdown, unsafe_allow_html=True)
 ```
 
 ### Use `<details><summary>` Elements in Markdown
